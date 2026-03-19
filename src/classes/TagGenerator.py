@@ -25,8 +25,8 @@ class TagGenerator:
         try:
             with open(self.html_file, 'r', encoding='utf-8') as file:
                 self.soup = BeautifulSoup(file, 'html.parser')
-        except:
-            print("no html file given")
+        except Exception as e:
+            print("no html file given", e)
 
     def add_section(self, product_id, css_class, parent_tag = "body"):
         parent = self.soup.select_one(parent_tag)
