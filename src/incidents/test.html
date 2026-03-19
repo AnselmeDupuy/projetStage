@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <link href="/src/templates/assets/style.css" rel="stylesheet"/>
+  <title>
+   Document
+  </title>
+ </head>
+ <nav>
+  <a href="#">
+   Home
+  </a>
+  <ul>
+   <p>
+    Incidents
+   </p>
+   <li>
+    <a href="#incident-Customer_Portal_Login_Latency">
+     Customer_Portal_Login_Latency.toml
+    </a>
+   </li>
+   <li>
+    <a href="#incident-Order_Processing_System_Outage">
+     Order_Processing_System_Outage.toml
+    </a>
+   </li>
+   <li>
+    <a href="#incident-Payment_Reconciliation_Batch_Drift">
+     Payment_Reconciliation_Batch_Drift.toml
+    </a>
+   </li>
+   <li>
+    <a href="#incident-Warehouse_Scanner_Sync_Failure">
+     Warehouse_Scanner_Sync_Failure.toml
+    </a>
+   </li>
+  </ul>
+ </nav>
+ <body>
+  <section class="incident-section" hreff="#incident-Customer_Portal_Login_Latency" id="incident-Customer_Portal_Login_Latency">
+   <div class="incident-report" id="report-Customer_Portal_Login_Latency">
+    <header class="report-header">
+     <h1 class="report-title">
+      Customer Portal Login Latency
+     </h1>
+     <div class="meta-info">
+      <span class="ticket-id">
+       Ticket: INC-1
+      </span>
+      <span class="status status-monitoring">
+       Status: Monitoring
+      </span>
+     </div>
+    </header>
+    <p class="report-priority">
+     Priority: High
+    </p>
+    <p class="report-severity">
+     Severity: Major
+    </p>
+    <p class="report-category">
+     Category: Customer Experience
+    </p>
+    <p class="report-created-at">
+     Created At: 2026-03-11T12:09:34
+    </p>
+    <p class="report-resolved-at">
+     Resolved At: 2026-03-11T14:47:52
+    </p>
+    <p class="report-author">
+     Report Author: Customer Platform SRE
+    </p>
+    <section class="company-info">
+     <h2 class="section-title">
+      Company Information
+     </h2>
+     <p class="company-details">
+      Northwind Digital Services - Customer Platform
+     </p>
+     <p class="company-location">
+      Location: Paris Regional Office
+     </p>
+    </section>
+    <section class="incident-details">
+     <h2 class="section-title">
+      Incident Details
+     </h2>
+     <p class="incident-summary">
+      Customers experienced severe login delays on the portal after a degraded identity cache caused repeated fallback requests to the primary authentication store.
+     </p>
+     <p class="incident-start-time">
+      Start Time: 2026-03-11T11:56:10
+     </p>
+     <p class="incident-detection-time">
+      Detection Time: 2026-03-11T12:07:02
+     </p>
+     <p class="incident-end-time">
+      End Time: 2026-03-11T14:39:08
+     </p>
+     <p class="incident-root-cause">
+      Root Cause: A cache node memory leak forced repeated evictions, amplifying traffic to the authentication datastore.
+     </p>
+     <ul class="affected-systems">
+      <li class="system-item">
+       Customer Portal
+      </li>
+      <li class="system-item">
+       Identity Cache
+      </li>
+      <li class="system-item">
+       Authentication API
+      </li>
+     </ul>
+    </section>
+    <section class="impact-metrics">
+     <h2 class="section-title">
+      Impact Analysis
+     </h2>
+     <div class="metrics-grid">
+      <div class="metric-card">
+       <h3 class="metric-label">
+        Orders Failed
+       </h3>
+       <p class="metric-value">
+        94
+       </p>
+      </div>
+      <div class="metric-card">
+       <h3 class="metric-label">
+        Orders Delayed
+       </h3>
+       <p class="metric-value">
+        608
+       </p>
+      </div>
+      <div class="metric-card">
+       <h3 class="metric-label">
+        Customers Affected
+       </h3>
+       <p class="metric-value">
+        3241
+       </p>
+      </div>
+      <div class="metric-card">
+       <h3 class="metric-label">
+        Support Tickets
+       </h3>
+       <p class="metric-value">
+        143
+       </p>
+      </div>
+      <div class="metric-card">
+       <h3 class="metric-label">
+        Revenue Loss
+       </h3>
+       <p class="metric-value">
+        €12,670
+       </p>
+      </div>
+     </div>
+    </section>
+    <section class="response-info">
+     <h2 class="section-title">
+      Response
+     </h2>
+     <p class="incident-commander">
+      Incident Commander: Owen Mercier
+     </p>
+     <h3 class="subsection-title">
+      Teams Involved
+     </h3>
+     <ul class="teams-involved">
+      <li class="team-item">
+       SRE
+      </li>
+      <li class="team-item">
+       Identity Services
+      </li>
+      <li class="team-item">
+       Customer Support
+      </li>
+     </ul>
+     <h3 class="subsection-title">
+      Timeline
+     </h3>
+     <ul class="timeline-list">
+      <li class="timeline-item">
+       12:07 - Synthetic login probes exceeded latency threshold
+      </li>
+      <li class="timeline-item">
+       12:16 - Identity services engaged and cache metrics reviewed
+      </li>
+      <li class="timeline-item">
+       12:44 - Faulty cache node isolated from rotation
+      </li>
+      <li class="timeline-item">
+       13:28 - Additional auth API capacity added during recovery
+      </li>
+      <li class="timeline-item">
+       14:39 - Login latency returned to normal operating range
+      </li>
+     </ul>
+    </section>
+    <section class="resolution-info">
+     <h2 class="section-title">
+      Resolution
+     </h2>
+     <h3 class="subsection-title">
+      Actions Taken
+     </h3>
+     <ul class="actions-taken">
+      <li class="action-item">
+       Removed the leaking cache node from service
+      </li>
+      <li class="action-item">
+       Warm-loaded replacement cache instances
+      </li>
+      <li class="action-item">
+       Applied temporary rate protection on fallback auth requests
+      </li>
+     </ul>
+     <p class="resolution-verification">
+      Verification: Portal login tests passed from five regions, and support confirmed user sign-ins were succeeding without visible delay.
+     </p>
+     <p class="resolved-by">
+      Resolved By: Identity Services Team
+     </p>
+    </section>
+    <section class="postmortem-info">
+     <h2 class="section-title">
+      Postmortem
+     </h2>
+     <h3 class="subsection-title">
+      Lessons Learned
+     </h3>
+     <ul class="lessons-learned">
+      <li class="lesson-item">
+       Cache health alerts should include eviction storms and memory leak indicators.
+      </li>
+      <li class="lesson-item">
+       Fallback request protection needs to activate earlier to protect the primary datastore.
+      </li>
+     </ul>
+     <h3 class="subsection-title">
+      Preventive Actions
+     </h3>
+     <ul class="preventive-actions">
+      <li class="preventive-action-item">
+       Deploy memory leak detection to the cache tier
+      </li>
+      <li class="preventive-action-item">
+       Add adaptive throttling for auth fallback traffic
+      </li>
+      <li class="preventive-action-item">
+       Expand regional synthetic login coverage
+      </li>
+     </ul>
+     <p class="review-date">
+      Review Date: 2026-03-20
+     </p>
+    </section>
+   </div>
+  </section>
+  <section class="incident-section" hreff="#incident-Order_Processing_System_Outage" id="incident-Order_Processing_System_Outage">
+   <div class="incident-report" id="report-Order_Processing_System_Outage">
+    <header class="report-header">
+     <h1 class="report-title">
+      Order Processing System Outage
+     </h1>
+     <div class="meta-info">
+      <span class="ticket-id">
+       Ticket: INC-0
+      </span>
+      <span class="status status-closed">
+       Status: Closed
+      </span>
+     </div>
+    </header>
+    <p class="report-priority">
+     Priority: High
+    </p>
+    <p class="report-severity">
+     Severity: Major
+    </p>
+    <p class="report-category">
+     Category: IT Infrastructure
+    </p>
+    <p class="report-created-at">
+     Created At: 2026-03-09T08:42:11
+    </p>
+    <p class="report-resolved-at">
+     Resolved At: 2026-03-09T11:26:45
+    </p>
+    <p class="report-author">
+     Report Author: IT Operations Team
+    </p>
+    <section class="company-info">
+     <h2 class="section-title">
+      Company Information
+     </h2>
+     <p class="company-details">
+      Northwind Trading Group - E-Commerce Operations
+     </p>
+     <p class="company-location">
+      Location: European Distribution Center
+     </p>
+    </section>
+    <section class="incident-details">
+     <h2 class="section-title">
+      Incident Details
+     </h2>
+     <p class="incident-summary">
+      Order processing services became unavailable due to a database connection pool exhaustion. Customers were unable to complete purchases during the incident window.
+     </p>
+     <p class="incident-start-time">
+      Start Time: 2026-03-09T08:38:00
+     </p>
+     <p class="incident-detection-time">
+      Detection Time: 2026-03-09T08:41:55
+     </p>
+     <p class="incident-end-time">
+      End Time: 2026-03-09T11:22:30
+     </p>
+     <p class="incident-root-cause">
+      Root Cause: Database connection pool limit reached after a spike in checkout requests.
+     </p>
+     <ul class="affected-systems">
+      <li class="system-item">
+       Order API
+      </li>
+      <li class="system-item">
+       Checkout Service
+      </li>
+      <li class="system-item">
+       Payment Gateway Connector
+      </li>
+     </ul>
+    </section>
+    <section class="impact-metrics">
+     <h2 class="section-title">
+      Impact Analysis
+     </h2>
+     <div class="metrics-grid">
+      <div class="metric-card">
+       <h3 class="metric-label">
+        Orders Failed
+       </h3>
+       <p class="metric-value">
+        1387
+       </p>
+      </div>
+      <div class="metric-card">
+       <h3 class="metric-label">
+        Orders Delayed
+       </h3>
+       <p class="metric-value">
+        423
+       </p>
+      </div>
+      <div class="metric-card">
+       <h3 class="metric-label">
+        Customers Affected
+       </h3>
+       <p class="metric-value">
+        1198
+       </p>
+      </div>
+      <div class="metric-card">
+       <h3 class="metric-label">
+        Support Tickets
+       </h3>
+       <p class="metric-value">
+        57
+       </p>
+      </div>
+      <div class="metric-card">
+       <h3 class="metric-label">
+        Revenue Loss
+       </h3>
+       <p class="metric-value">
+        €27,450
+       </p>
+      </div>
+     </div>
+    </section>
+    <section class="response-info">
+     <h2 class="section-title">
+      Response
+     </h2>
+     <p class="incident-commander">
+      Incident Commander: Laura Martinez
+     </p>
+     <h3 class="subsection-title">
+      Teams Involved
+     </h3>
+     <ul class="teams-involved">
+      <li class="team-item">
+       IT Operations
+      </li>
+      <li class="team-item">
+       Database Administration
+      </li>
+      <li class="team-item">
+       Platform Engineering
+      </li>
+     </ul>
+     <h3 class="subsection-title">
+      Timeline
+     </h3>
+     <ul class="timeline-list">
+      <li class="timeline-item">
+       08:41 - Monitoring alerts triggered for high API latency
+      </li>
+      <li class="timeline-item">
+       08:45 - Incident declared and investigation started
+      </li>
+      <li class="timeline-item">
+       09:12 - Root cause identified in database connection pool
+      </li>
+      <li class="timeline-item">
+       09:45 - Temporary scaling of database cluster
+      </li>
+      <li class="timeline-item">
+       11:22 - Services restored and checkout operational
+      </li>
+     </ul>
+    </section>
+    <section class="resolution-info">
+     <h2 class="section-title">
+      Resolution
+     </h2>
+     <h3 class="subsection-title">
+      Actions Taken
+     </h3>
+     <ul class="actions-taken">
+      <li class="action-item">
+       Restarted affected application pods
+      </li>
+      <li class="action-item">
+       Increased database connection pool limit
+      </li>
+      <li class="action-item">
+       Deployed patch to optimize connection reuse
+      </li>
+     </ul>
+     <p class="resolution-verification">
+      Verification: Order processing and checkout functionality confirmed operational through internal test transactions.
+     </p>
+     <p class="resolved-by">
+      Resolved By: Platform Engineering Team
+     </p>
+    </section>
+    <section class="postmortem-info">
+     <h2 class="section-title">
+      Postmortem
+     </h2>
+     <h3 class="subsection-title">
+      Lessons Learned
+     </h3>
+     <ul class="lessons-learned">
+      <li class="lesson-item">
+       Database connection pool limits were too low for peak traffic.
+      </li>
+      <li class="lesson-item">
+       Monitoring thresholds for connection exhaustion were insufficient.
+      </li>
+     </ul>
+     <h3 class="subsection-title">
+      Preventive Actions
+     </h3>
+     <ul class="preventive-actions">
+      <li class="preventive-action-item">
+       Implement automatic database scaling policies
+      </li>
+      <li class="preventive-action-item">
+       Add alerting for connection pool saturation
+      </li>
+      <li class="preventive-action-item">
+       Conduct load testing during peak traffic scenarios
+      </li>
+     </ul>
+     <p class="review-date">
+      Review Date: 2026-03-15
+     </p>
+    </section>
+   </div>
+  </section>
+  <section class="incident-section" hreff="#incident-Payment_Reconciliation_Batch_Drift" id="incident-Payment_Reconciliation_Batch_Drift">
+   <div class="incident-report" id="report-Payment_Reconciliation_Batch_Drift">
+    <header class="report-header">
+     <h1 class="report-title">
+      Payment Reconciliation Batch Drift
+     </h1>
+     <div class="meta-info">
+      <span class="ticket-id">
+       Ticket: INC-3
+      </span>
+      <span class="status status-closed">
+       Status: Closed
+      </span>
+     </div>
+    </header>
+    <p class="report-priority">
+     Priority: Low
+    </p>
+    <p class="report-severity">
+     Severity: Minor
+    </p>
+    <p class="report-category">
+     Category: Finance Systems
+    </p>
+    <p class="report-created-at">
+     Created At: 2026-03-12T21:03:51
+    </p>
+    <p class="report-resolved-at">
+     Resolved At: 2026-03-13T01:18:06
+    </p>
+    <p class="report-author">
+     Report Author: Finance Automation Team
+    </p>
+    <section class="company-info">
+     <h2 class="section-title">
+      Company Information
+     </h2>
+     <p class="company-details">
+      Northwind Financial Operations - Settlement and Reconciliation
+     </p>
+     <p class="company-location">
+      Location: Brussels Shared Services Center
+     </p>
+    </section>
+    <section class="incident-details">
+     <h2 class="section-title">
+      Incident Details
+     </h2>
+     <p class="incident-summary">
+      Nightly payment reconciliation produced inconsistent settlement totals after duplicate settlement events were included in a downstream aggregation job.
+     </p>
+     <p class="incident-start-time">
+      Start Time: 2026-03-12T20:55:00
+     </p>
+     <p class="incident-detection-time">
+      Detection Time: 2026-03-12T21:10:43
+     </p>
+     <p class="incident-end-time">
+      End Time: 2026-03-13T01:04:12
+     </p>
+     <p class="incident-root-cause">
+      Root Cause: A retry path in the settlement loader republished already acknowledged events without deduplication.
+     </p>
+     <ul class="affected-systems">
+      <li class="system-item">
+       Settlement Loader
+      </li>
+      <li class="system-item">
+       Reconciliation Batch
+      </li>
+      <li class="system-item">
+       Finance Ledger Export
+      </li>
+     </ul>
+    </section>
+    <section class="impact-metrics">
+     <h2 class="section-title">
+      Impact Analysis
+     </h2>
+     <div class="metrics-grid">
+      <div class="metric-card">
+       <h3 class="metric-label">
+        Orders Failed
+       </h3>
+       <p class="metric-value">
+        0
+       </p>
+      </div>
+      <div class="metric-card">
+       <h3 class="metric-label">
+        Orders Delayed
+       </h3>
+       <p class="metric-value">
+        0
+       </p>
+      </div>
+      <div class="metric-card">
+       <h3 class="metric-label">
+        Customers Affected
+       </h3>
+       <p class="metric-value">
+        0
+       </p>
+      </div>
+      <div class="metric-card">
+       <h3 class="metric-label">
+        Support Tickets
+       </h3>
+       <p class="metric-value">
+        3
+       </p>
+      </div>
+      <div class="metric-card">
+       <h3 class="metric-label">
+        Revenue Loss
+       </h3>
+       <p class="metric-value">
+        €2,150
+       </p>
+      </div>
+     </div>
+    </section>
+    <section class="response-info">
+     <h2 class="section-title">
+      Response
+     </h2>
+     <p class="incident-commander">
+      Incident Commander: Sofia Van den Berg
+     </p>
+     <h3 class="subsection-title">
+      Teams Involved
+     </h3>
+     <ul class="teams-involved">
+      <li class="team-item">
+       Finance Automation
+      </li>
+      <li class="team-item">
+       Data Engineering
+      </li>
+      <li class="team-item">
+       Accounting Operations
+      </li>
+     </ul>
+     <h3 class="subsection-title">
+      Timeline
+     </h3>
+     <ul class="timeline-list">
+      <li class="timeline-item">
+       21:10 - Batch validation flagged ledger mismatch
+      </li>
+      <li class="timeline-item">
+       21:34 - Finance automation paused export to accounting
+      </li>
+      <li class="timeline-item">
+       22:08 - Duplicate settlement events identified in raw feed
+      </li>
+      <li class="timeline-item">
+       23:26 - Deduplication rerun completed on the affected batch
+      </li>
+      <li class="timeline-item">
+       01:04 - Corrected ledger export delivered to accounting systems
+      </li>
+     </ul>
+    </section>
+    <section class="resolution-info">
+     <h2 class="section-title">
+      Resolution
+     </h2>
+     <h3 class="subsection-title">
+      Actions Taken
+     </h3>
+     <ul class="actions-taken">
+      <li class="action-item">
+       Paused the downstream ledger export
+      </li>
+      <li class="action-item">
+       Reprocessed the affected settlement window with deduplication enabled
+      </li>
+      <li class="action-item">
+       Patched the retry path to preserve settlement idempotency
+      </li>
+     </ul>
+     <p class="resolution-verification">
+      Verification: Finance reconciliation totals matched the acquiring bank report and accounting signed off on the corrected export.
+     </p>
+     <p class="resolved-by">
+      Resolved By: Data Engineering Team
+     </p>
+    </section>
+    <section class="postmortem-info">
+     <h2 class="section-title">
+      Postmortem
+     </h2>
+     <h3 class="subsection-title">
+      Lessons Learned
+     </h3>
+     <ul class="lessons-learned">
+      <li class="lesson-item">
+       Retry flows in financial pipelines must always enforce idempotent replay semantics.
+      </li>
+      <li class="lesson-item">
+       Batch validation should stop downstream delivery before manual finance review is required.
+      </li>
+     </ul>
+     <h3 class="subsection-title">
+      Preventive Actions
+     </h3>
+     <ul class="preventive-actions">
+      <li class="preventive-action-item">
+       Add duplicate-settlement anomaly detection before aggregation
+      </li>
+      <li class="preventive-action-item">
+       Introduce immutable event replay identifiers across the settlement pipeline
+      </li>
+      <li class="preventive-action-item">
+       Expand finance batch simulation tests for retry scenarios
+      </li>
+     </ul>
+     <p class="review-date">
+      Review Date: 2026-03-22
+     </p>
+    </section>
+   </div>
+  </section>
+  <section class="incident-section" hreff="#incident-Warehouse_Scanner_Sync_Failure" id="incident-Warehouse_Scanner_Sync_Failure">
+   <div class="incident-report" id="report-Warehouse_Scanner_Sync_Failure">
+    <header class="report-header">
+     <h1 class="report-title">
+      Warehouse Scanner Sync Failure
+     </h1>
+     <div class="meta-info">
+      <span class="ticket-id">
+       Ticket: INC-2
+      </span>
+      <span class="status status-resolved">
+       Status: Resolved
+      </span>
+     </div>
+    </header>
+    <p class="report-priority">
+     Priority: Medium
+    </p>
+    <p class="report-severity">
+     Severity: Moderate
+    </p>
+    <p class="report-category">
+     Category: Operations Systems
+    </p>
+    <p class="report-created-at">
+     Created At: 2026-03-10T06:14:02
+    </p>
+    <p class="report-resolved-at">
+     Resolved At: 2026-03-10T08:03:19
+    </p>
+    <p class="report-author">
+     Report Author: Operations Reliability Team
+    </p>
+    <section class="company-info">
+     <h2 class="section-title">
+      Company Information
+     </h2>
+     <p class="company-details">
+      Northwind Fulfillment Services - Warehouse Operations
+     </p>
+     <p class="company-location">
+      Location: Lyon Fulfillment Hub
+     </p>
+    </section>
+    <section class="incident-details">
+     <h2 class="section-title">
+      Incident Details
+     </h2>
+     <p class="incident-summary">
+      Handheld warehouse scanners stopped synchronizing inventory updates after a failed message broker deployment, delaying picking confirmations.
+     </p>
+     <p class="incident-start-time">
+      Start Time: 2026-03-10T05:58:00
+     </p>
+     <p class="incident-detection-time">
+      Detection Time: 2026-03-10T06:11:27
+     </p>
+     <p class="incident-end-time">
+      End Time: 2026-03-10T07:55:41
+     </p>
+     <p class="incident-root-cause">
+      Root Cause: A broker configuration change invalidated device authentication tokens for scanner sessions.
+     </p>
+     <ul class="affected-systems">
+      <li class="system-item">
+       Scanner Sync Service
+      </li>
+      <li class="system-item">
+       Inventory Event Bus
+      </li>
+      <li class="system-item">
+       Picking Dashboard
+      </li>
+     </ul>
+    </section>
+    <section class="impact-metrics">
+     <h2 class="section-title">
+      Impact Analysis
+     </h2>
+     <div class="metrics-grid">
+      <div class="metric-card">
+       <h3 class="metric-label">
+        Orders Failed
+       </h3>
+       <p class="metric-value">
+        0
+       </p>
+      </div>
+      <div class="metric-card">
+       <h3 class="metric-label">
+        Orders Delayed
+       </h3>
+       <p class="metric-value">
+        286
+       </p>
+      </div>
+      <div class="metric-card">
+       <h3 class="metric-label">
+        Customers Affected
+       </h3>
+       <p class="metric-value">
+        172
+       </p>
+      </div>
+      <div class="metric-card">
+       <h3 class="metric-label">
+        Support Tickets
+       </h3>
+       <p class="metric-value">
+        11
+       </p>
+      </div>
+      <div class="metric-card">
+       <h3 class="metric-label">
+        Revenue Loss
+       </h3>
+       <p class="metric-value">
+        €6,840
+       </p>
+      </div>
+     </div>
+    </section>
+    <section class="response-info">
+     <h2 class="section-title">
+      Response
+     </h2>
+     <p class="incident-commander">
+      Incident Commander: Nina Laurent
+     </p>
+     <h3 class="subsection-title">
+      Teams Involved
+     </h3>
+     <ul class="teams-involved">
+      <li class="team-item">
+       Warehouse IT
+      </li>
+      <li class="team-item">
+       Messaging Platform
+      </li>
+      <li class="team-item">
+       Operations Support
+      </li>
+     </ul>
+     <h3 class="subsection-title">
+      Timeline
+     </h3>
+     <ul class="timeline-list">
+      <li class="timeline-item">
+       06:11 - Warehouse dashboard alerts on stale inventory events
+      </li>
+      <li class="timeline-item">
+       06:18 - Incident bridge opened with warehouse supervisors
+      </li>
+      <li class="timeline-item">
+       06:42 - Broker rollout identified as trigger
+      </li>
+      <li class="timeline-item">
+       07:05 - Previous broker configuration restored
+      </li>
+      <li class="timeline-item">
+       07:55 - Scanner synchronization backlog fully drained
+      </li>
+     </ul>
+    </section>
+    <section class="resolution-info">
+     <h2 class="section-title">
+      Resolution
+     </h2>
+     <h3 class="subsection-title">
+      Actions Taken
+     </h3>
+     <ul class="actions-taken">
+      <li class="action-item">
+       Rolled back the broker deployment
+      </li>
+      <li class="action-item">
+       Reissued device authentication tokens
+      </li>
+      <li class="action-item">
+       Replayed missed inventory events from the queue backlog
+      </li>
+     </ul>
+     <p class="resolution-verification">
+      Verification: Warehouse supervisors confirmed scanner updates, and inventory counts matched control samples across three active zones.
+     </p>
+     <p class="resolved-by">
+      Resolved By: Messaging Platform Team
+     </p>
+    </section>
+    <section class="postmortem-info">
+     <h2 class="section-title">
+      Postmortem
+     </h2>
+     <h3 class="subsection-title">
+      Lessons Learned
+     </h3>
+     <ul class="lessons-learned">
+      <li class="lesson-item">
+       Device authentication changes need a canary rollout with active handheld clients.
+      </li>
+      <li class="lesson-item">
+       Operational dashboards should alert sooner on event staleness, not only sync failure counts.
+      </li>
+     </ul>
+     <h3 class="subsection-title">
+      Preventive Actions
+     </h3>
+     <ul class="preventive-actions">
+      <li class="preventive-action-item">
+       Introduce broker deployment smoke tests with real scanner sessions
+      </li>
+      <li class="preventive-action-item">
+       Add fallback token refresh on scanner reconnect
+      </li>
+      <li class="preventive-action-item">
+       Create an automated backlog replay verification job
+      </li>
+     </ul>
+     <p class="review-date">
+      Review Date: 2026-03-18
+     </p>
+    </section>
+   </div>
+  </section>
+ </body>
+</html>

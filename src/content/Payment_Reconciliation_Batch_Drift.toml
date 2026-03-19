@@ -1,0 +1,78 @@
+[report]
+ticket_id = "INC-3"
+title = "Payment Reconciliation Batch Drift"
+status = "Closed"
+priority = "Low"
+severity = "Minor"
+category = "Finance Systems"
+created_at = "2026-03-12T21:03:51"
+resolved_at = "2026-03-13T01:18:06"
+report_author = "Finance Automation Team"
+
+###########################################################################################
+
+[company]
+name = "Northwind Financial Operations"
+department = "Settlement and Reconciliation"
+location = "Brussels Shared Services Center"
+
+###########################################################################################
+
+[incident]
+summary = "Nightly payment reconciliation produced inconsistent settlement totals after duplicate settlement events were included in a downstream aggregation job."
+affected_systems = ["Settlement Loader", "Reconciliation Batch", "Finance Ledger Export"]
+start_time = "2026-03-12T20:55:00"
+detection_time = "2026-03-12T21:10:43"
+end_time = "2026-03-13T01:04:12"
+root_cause = "A retry path in the settlement loader republished already acknowledged events without deduplication."
+
+###########################################################################################
+
+[impact]
+orders_failed = 0
+orders_delayed = 0
+estimated_revenue_loss_eur = 2150
+customers_affected = 0
+support_tickets_created = 3
+
+###########################################################################################
+
+[response]
+incident_commander = "Sofia Van den Berg"
+teams_involved = ["Finance Automation", "Data Engineering", "Accounting Operations"]
+
+###########################################################################################
+
+[response.timeline]
+event1 = "21:10 - Batch validation flagged ledger mismatch"
+event2 = "21:34 - Finance automation paused export to accounting"
+event3 = "22:08 - Duplicate settlement events identified in raw feed"
+event4 = "23:26 - Deduplication rerun completed on the affected batch"
+event5 = "01:04 - Corrected ledger export delivered to accounting systems"
+
+###########################################################################################
+
+[resolution]
+actions_taken = [
+    "Paused the downstream ledger export",
+    "Reprocessed the affected settlement window with deduplication enabled",
+    "Patched the retry path to preserve settlement idempotency"
+]
+verification = "Finance reconciliation totals matched the acquiring bank report and accounting signed off on the corrected export."
+resolved_by = "Data Engineering Team"
+
+###########################################################################################
+
+[postmortem]
+lessons_learned = [
+    "Retry flows in financial pipelines must always enforce idempotent replay semantics.",
+    "Batch validation should stop downstream delivery before manual finance review is required."
+]
+
+preventive_actions = [
+    "Add duplicate-settlement anomaly detection before aggregation",
+    "Introduce immutable event replay identifiers across the settlement pipeline",
+    "Expand finance batch simulation tests for retry scenarios"
+]
+
+review_date = "2026-03-22"
