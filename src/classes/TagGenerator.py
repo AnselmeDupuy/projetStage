@@ -82,7 +82,7 @@ class TagGenerator:
         file_name = os.path.basename(toml_file)
         file_id = os.path.splitext(file_name)[0]
         section_id = f"incident-{file_id}"
-        section_selector = f"#{section_id}"
+        section_selector = f"#{section_id}" 
 
         print(f"Generating HTML for TOML file: {toml_file}, section ID: {section_id}")
 
@@ -352,36 +352,14 @@ class TagGenerator:
         with open(output_path, 'w', encoding='utf-8') as file:
             file.write(str(self.soup.prettify()))
 
+
+
+
     def generate_JS(self, html_file):
         try:
-            with open(html_file, 'r', encoding='utf-8') as file:
-                soup = BeautifulSoup(file, 'html.parser')
+            attributes= {'src' : '../JS/index.js'}
+            self.add_tag('script', 'body', '', attributes)
+            return True
         except Exception as e:
-            print("Error loading HTML file for JS generation", e)
-            return None
-        
-        content = """    document.addEventListener("DOMContentLoaded", () => {
-                        const cards = document.querySelectorAll(".incident-section");
-                        const modal = document.querySelector(".modal");
-                        const modalContent = document.querySelector(".modal-content");
-
-                        cards.forEach((card) => {
-                            card.addEventListener("click", () => {
-                            if (modal.style.display === "block") {
-                                modal.style.display = "none";
-                                modalContent.innerHTML = "";
-                            } else {
-                                modalContent.innerHTML = card.innerHTML;
-                                modal.style.display = "block";
-                            }
-                            });
-                        });
-                        window.onclick = function(event) {
-                            if (event.target === modal) {
-                            modal.style.display = "none";
-                            }
-                        };
-                        });"""
-        self.add_tag('script', 'body', content)
-        return True
+            print(f'Erreur : ', e)
         

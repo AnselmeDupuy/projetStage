@@ -16,8 +16,12 @@ def generate_html():
     tag_generator.generate_nav_items(files)
     
 
+
     for file in files:
-        tag_generator.generate_html_from_toml(file)
+        if os.path.splitext(file)[1] != '.toml':
+            print(f'wrong file type')
+        else:
+            tag_generator.generate_html_from_toml(file)
 
     
     tag_generator.generate_JS(html_file)
