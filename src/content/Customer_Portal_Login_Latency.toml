@@ -1,0 +1,78 @@
+[report]
+ticket_id = "INC-1"
+title = "Customer Portal Login Latency"
+status = "Monitoring"
+priority = "High"
+severity = "Major"
+category = "Customer Experience"
+created_at = "2026-03-11T12:09:34"
+resolved_at = "2026-03-11T14:47:52"
+report_author = "Customer Platform SRE"
+
+###########################################################################################
+
+[company]
+name = "Northwind Digital Services"
+department = "Customer Platform"
+location = "Paris Regional Office"
+
+###########################################################################################
+
+[incident]
+summary = "Customers experienced severe login delays on the portal after a degraded identity cache caused repeated fallback requests to the primary authentication store."
+affected_systems = ["Customer Portal", "Identity Cache", "Authentication API"]
+start_time = "2026-03-11T11:56:10"
+detection_time = "2026-03-11T12:07:02"
+end_time = "2026-03-11T14:39:08"
+root_cause = "A cache node memory leak forced repeated evictions, amplifying traffic to the authentication datastore."
+
+###########################################################################################
+
+[impact]
+orders_failed = 94
+orders_delayed = 608
+estimated_revenue_loss_eur = 12670
+customers_affected = 3241
+support_tickets_created = 143
+
+###########################################################################################
+
+[response]
+incident_commander = "Owen Mercier"
+teams_involved = ["SRE", "Identity Services", "Customer Support"]
+
+###########################################################################################
+
+[response.timeline]
+event1 = "12:07 - Synthetic login probes exceeded latency threshold"
+event2 = "12:16 - Identity services engaged and cache metrics reviewed"
+event3 = "12:44 - Faulty cache node isolated from rotation"
+event4 = "13:28 - Additional auth API capacity added during recovery"
+event5 = "14:39 - Login latency returned to normal operating range"
+
+###########################################################################################
+
+[resolution]
+actions_taken = [
+    "Removed the leaking cache node from service",
+    "Warm-loaded replacement cache instances",
+    "Applied temporary rate protection on fallback auth requests"
+]
+verification = "Portal login tests passed from five regions, and support confirmed user sign-ins were succeeding without visible delay."
+resolved_by = "Identity Services Team"
+
+###########################################################################################
+
+[postmortem]
+lessons_learned = [
+    "Cache health alerts should include eviction storms and memory leak indicators.",
+    "Fallback request protection needs to activate earlier to protect the primary datastore."
+]
+
+preventive_actions = [
+    "Deploy memory leak detection to the cache tier",
+    "Add adaptive throttling for auth fallback traffic",
+    "Expand regional synthetic login coverage"
+]
+
+review_date = "2026-03-20"

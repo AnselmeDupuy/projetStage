@@ -1,0 +1,66 @@
+[report]
+ticket_id = "INC-0"
+title = "Order Processing System Outage"
+status = "Closed"
+priority = "High"
+severity = "Major"
+category = "IT Infrastructure"
+created_at = "2026-03-09T08:42:11"
+resolved_at = "2026-03-09T11:26:45"
+report_author = "IT Operations Team"
+
+###########################################################################################
+
+[company]
+name = "Northwind Trading Group"
+department = "E-Commerce Operations"
+location = "European Distribution Center"
+
+[incident]
+summary = "Order processing services became unavailable due to a database connection pool exhaustion. Customers were unable to complete purchases during the incident window."
+affected_systems = ["Order API", "Checkout Service", "Payment Gateway Connector"]
+start_time = "2026-03-09T08:38:00"
+detection_time = "2026-03-09T08:41:55"
+end_time = "2026-03-09T11:22:30"
+root_cause = "Database connection pool limit reached after a spike in checkout requests."
+
+[impact]
+orders_failed = 1387
+orders_delayed = 423
+estimated_revenue_loss_eur = 27450
+customers_affected = 1198
+support_tickets_created = 57
+
+[response]
+incident_commander = "Laura Martinez"
+teams_involved = ["IT Operations", "Database Administration", "Platform Engineering"]
+
+[response.timeline]
+event1 = "08:41 - Monitoring alerts triggered for high API latency"
+event2 = "08:45 - Incident declared and investigation started"
+event3 = "09:12 - Root cause identified in database connection pool"
+event4 = "09:45 - Temporary scaling of database cluster"
+event5 = "11:22 - Services restored and checkout operational"
+
+[resolution]
+actions_taken = [
+    "Restarted affected application pods",
+    "Increased database connection pool limit",
+    "Deployed patch to optimize connection reuse"
+]
+verification = "Order processing and checkout functionality confirmed operational through internal test transactions."
+resolved_by = "Platform Engineering Team"
+
+[postmortem]
+lessons_learned = [
+    "Database connection pool limits were too low for peak traffic.",
+    "Monitoring thresholds for connection exhaustion were insufficient."
+]
+
+preventive_actions = [
+    "Implement automatic database scaling policies",
+    "Add alerting for connection pool saturation",
+    "Conduct load testing during peak traffic scenarios"
+]
+
+review_date = "2026-03-15"
