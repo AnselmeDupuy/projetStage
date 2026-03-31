@@ -75,7 +75,7 @@ class TagGenerator:
             file_id = os.path.splitext(os.path.basename(file))[0]
             section_id = f"incident-{file_id}"
             self.add_tag('li', parent_selector='nav ul')
-            self.add_tag('a', parent_selector='nav ul li:last-child', content=file, attributes={'href': f"#{section_id}"})
+            self.add_tag('a', parent_selector='nav ul li:last-child', content=file_id, attributes={'href': f"#{section_id}"})
         return nav_items
     
     def generate_html_from_toml(self, toml_file):
@@ -351,3 +351,37 @@ class TagGenerator:
         
         with open(output_path, 'w', encoding='utf-8') as file:
             file.write(str(self.soup.prettify()))
+
+    def generate_JS(self, html_file):
+        try:
+            with open(html_file, 'r', encoding='utf-8') as file:
+                soup = BeautifulSoup(file, 'html.parser')
+        except Exception as e:
+            print("Error loading HTML file for JS generation", e)
+            return None
+        
+        content = """    document.addEventListener("DOMContentLoaded", () => {
+                        const cards = document.querySelectorAll(".incident-section");
+                        const modal = document.querySelector(".modal");
+                        const modalContent = document.querySelector(".modal-content");
+
+                        cards.forEach((card) => {
+                            card.addEventListener("click", () => {
+                            if (modal.style.display === "block") {
+                                modal.style.display = "none";
+                                modalContent.innerHTML = "";
+                            } else {
+                                modalContent.innerHTML = card.innerHTML;
+                                modal.style.display = "block";
+                            }
+                            });
+                        });
+                        window.onclick = function(event) {
+                            if (event.target === modal) {
+                            modal.style.display = "none";
+                            }
+                        };
+                        });"""
+        self.add_tag('script', 'body', content)
+        return True
+        

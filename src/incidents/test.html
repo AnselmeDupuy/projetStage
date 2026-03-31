@@ -9,36 +9,37 @@
   </title>
  </head>
  <nav>
-  <a href="#">
-   Home
-  </a>
+  <h1>
+   Incidents
+  </h1>
   <ul>
-   <p>
-    Incidents
-   </p>
    <li>
     <a href="#incident-Customer_Portal_Login_Latency">
-     Customer_Portal_Login_Latency.toml
+     Customer_Portal_Login_Latency
     </a>
    </li>
    <li>
     <a href="#incident-Order_Processing_System_Outage">
-     Order_Processing_System_Outage.toml
+     Order_Processing_System_Outage
     </a>
    </li>
    <li>
     <a href="#incident-Payment_Reconciliation_Batch_Drift">
-     Payment_Reconciliation_Batch_Drift.toml
+     Payment_Reconciliation_Batch_Drift
     </a>
    </li>
    <li>
     <a href="#incident-Warehouse_Scanner_Sync_Failure">
-     Warehouse_Scanner_Sync_Failure.toml
+     Warehouse_Scanner_Sync_Failure
     </a>
    </li>
   </ul>
  </nav>
  <body>
+  <div class="modal" id="modal">
+   <div class="modal-content">
+   </div>
+  </div>
   <section class="incident-section" hreff="#incident-Customer_Portal_Login_Latency" id="incident-Customer_Portal_Login_Latency">
    <div class="incident-report" id="report-Customer_Portal_Login_Latency">
     <header class="report-header">
@@ -935,5 +936,29 @@
     </section>
    </div>
   </section>
+  <script>
+   document.addEventListener("DOMContentLoaded", () => {
+                        const cards = document.querySelectorAll(".incident-section");
+                        const modal = document.querySelector(".modal");
+                        const modalContent = document.querySelector(".modal-content");
+
+                        cards.forEach((card) => {
+                            card.addEventListener("click", () => {
+                            if (modal.style.display === "block") {
+                                modal.style.display = "none";
+                                modalContent.innerHTML = "";
+                            } else {
+                                modalContent.innerHTML = card.innerHTML;
+                                modal.style.display = "block";
+                            }
+                            });
+                        });
+                        window.onclick = function(event) {
+                            if (event.target === modal) {
+                            modal.style.display = "none";
+                            }
+                        };
+                        });
+  </script>
  </body>
 </html>
