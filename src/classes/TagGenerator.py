@@ -1,5 +1,6 @@
 import os
 import sys
+from datetime import datetime
 from bs4 import BeautifulSoup
 import toml
 
@@ -28,8 +29,10 @@ class TagGenerator:
         except Exception as e:
             print("no html file given", e)
 
-    def add_section(self, product_id, css_class, parent_tag = "body"):
+    def add_section(self, product_id, css_class, parent_tag = "body", attributes=None):
         parent = self.soup.select_one(parent_tag)
+
+
 
         if not parent:
             raise ValueError(f"Parent element '{parent_tag}' not found")
@@ -38,6 +41,11 @@ class TagGenerator:
         section['id'] = product_id
         section['class'] = css_class
         section['hreff'] = f"#{product_id}"
+        section['data-product-id'] = product_id
+
+        if attributes:
+            for key, value in attributes.items():
+                section[key] = value
 
 
         parent.append(section)
@@ -73,6 +81,7 @@ class TagGenerator:
         nav_items = []
         for file in files:
             file_id = os.path.splitext(os.path.basename(file))[0]
+            
             section_id = f"incident-{file_id}"
             self.add_tag('li', parent_selector='nav ul')
             self.add_tag('a', parent_selector='nav ul li:last-child', content=file_id, attributes={'href': f"#{section_id}"})
@@ -86,7 +95,7 @@ class TagGenerator:
 
         print(f"Generating HTML for TOML file: {toml_file}, section ID: {section_id}")
 
-        self.add_section(section_id, "incident-section")
+        
         try:
             toml_path = os.path.join(CONTENT_FOLDER, toml_file)
             with open(toml_path, 'r', encoding='utf-8') as f:
@@ -94,8 +103,20 @@ class TagGenerator:
         except Exception as e:
             print(f"Error loading TOML file: {toml_file}", e)
             return False
+
         
+        created_at = self.data.get('report', {}).get('created_at')
+        section_attributes = {}
         
+        if created_at:
+            section_attributes['data-time'] = created_at
+            section_attributes['data-time-ts'] = str(int(datetime.fromisoformat(created_at).timestamp()))
+        
+        try:
+            self.add_section(section_id, "incident-section", attributes=section_attributes)
+        except Exception as e:
+            print(f"Error adding section for file: {toml_file}", e)
+            return False
         
         report_id = f"report-{file_id}"
         report_selector = f"#{report_id}"

@@ -10,18 +10,19 @@ def generate_html():
     html_file = 'templates/index.html'
     toml_folder = 'src/content'
     tag_generator = TagGenerator.TagGenerator(html_file, toml_folder)
+    files = []
+    
 
     files = NavGen.NavGen().get_files()
 
-    tag_generator.generate_nav_items(files)
-    
-
-
     for file in files:
         if os.path.splitext(file)[1] != '.toml':
-            print(f'wrong file type')
-        else:
-            tag_generator.generate_html_from_toml(file)
+            files.pop(files.index(file))
+
+    tag_generator.generate_nav_items(files)
+
+    for file in files:
+        tag_generator.generate_html_from_toml(file)
 
     
     tag_generator.generate_JS(html_file)
