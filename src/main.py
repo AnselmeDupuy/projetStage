@@ -22,6 +22,7 @@ def generate_html():
     tag_generator.generate_nav_items(files)
 
     for file in files:
+        tag_generator.generate_card_info(file)
         tag_generator.generate_html_from_toml(file)
 
     

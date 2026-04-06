@@ -11,6 +11,7 @@ class TagGenerator:
         self.html_file = html_file
         self.toml_folder = toml_folder
         self.data = None
+        self.infos = None
 
         self.base_dir = BASE_DIR
         self.folder = CONTENT_FOLDER
@@ -32,15 +33,13 @@ class TagGenerator:
     def add_section(self, product_id, css_class, parent_tag = "body", attributes=None):
         parent = self.soup.select_one(parent_tag)
 
-
-
         if not parent:
             raise ValueError(f"Parent element '{parent_tag}' not found")
         
         section = self.soup.new_tag('section')
         section['id'] = product_id
         section['class'] = css_class
-        section['hreff'] = f"#{product_id}"
+        section['href'] = f"#{product_id}"
         section['data-product-id'] = product_id
 
         if attributes:
@@ -87,30 +86,32 @@ class TagGenerator:
             self.add_tag('a', parent_selector='nav ul li:last-child', content=file_id, attributes={'href': f"#{section_id}"})
         return nav_items
     
-    def generate_html_from_toml(self, toml_file):
+    def generate_card_info(self, toml_file):
         file_name = os.path.basename(toml_file)
         file_id = os.path.splitext(file_name)[0]
         section_id = f"incident-{file_id}"
-        section_selector = f"#{section_id}" 
+        section_selector = f"#{section_id}"
 
         print(f"Generating HTML for TOML file: {toml_file}, section ID: {section_id}")
-
         
         try:
             toml_path = os.path.join(CONTENT_FOLDER, toml_file)
             with open(toml_path, 'r', encoding='utf-8') as f:
-                self.data = toml.load(f)
+                self.infos = toml.load(f)
         except Exception as e:
             print(f"Error loading TOML file: {toml_file}", e)
             return False
 
+
         
-        created_at = self.data.get('report', {}).get('created_at')
+        created_at = self.infos.get('report', {}).get('created_at')
         section_attributes = {}
-        
+
         if created_at:
             section_attributes['data-time'] = created_at
             section_attributes['data-time-ts'] = str(int(datetime.fromisoformat(created_at).timestamp()))
+
+        
         
         try:
             self.add_section(section_id, "incident-section", attributes=section_attributes)
@@ -119,6 +120,81 @@ class TagGenerator:
             return False
         
         report_id = f"report-{file_id}"
+        report_selector = f"#{report_id}"
+        self.add_tag('div', parent_selector=section_selector,
+                                   attributes={'class': 'incident-report', 'id': report_id})
+        
+        if 'report' in self.infos:
+            report = self.infos['report']
+            
+            self.add_tag('header', parent_selector=report_selector,
+                                      attributes={'class': 'report-header'})
+            
+            self.add_tag('h1', parent_selector=f"{report_selector} .report-header",
+                                      content=report.get('title', 'Incident Report'),
+                                      attributes={'class': 'report-title'})
+            
+            self.add_tag('div', parent_selector=f"{report_selector} .report-header",
+                                      attributes={'class': 'meta-info'})
+            
+            self.add_tag('span', parent_selector=f"{report_selector} .meta-info",
+                                      content=f"Ticket: {report.get('ticket_id', 'N/A')}",
+                                      attributes={'class': 'ticket-id'})
+            
+            self.add_tag('span', parent_selector=f"{report_selector} .meta-info",
+                                      content=f"Status: {report.get('status', 'Unknown')}",
+                                      attributes={'class': f"status status-{report.get('status', '').lower()}"})
+
+            self.add_tag('p', parent_selector=report_selector,
+                                      content=f"Priority: {report.get('priority', 'N/A')}",
+                                      attributes={'class': 'report-priority'})
+
+            self.add_tag('p', parent_selector=report_selector,
+                                      content=f"Severity: {report.get('severity', 'N/A')}",
+                                      attributes={'class': 'report-severity'})
+
+            self.add_tag('p', parent_selector=report_selector,
+                                      content=f"Category: {report.get('category', 'N/A')}",
+                                      attributes={'class': 'report-category'})
+
+            self.add_tag('p', parent_selector=report_selector,
+                                      content=f"Created At: {report.get('created_at', 'N/A')}",
+                                      attributes={'class': 'report-created-at'})
+
+            self.add_tag('p', parent_selector=report_selector,
+                                      content=f"Resolved At: {report.get('resolved_at', 'N/A')}",
+                                      attributes={'class': 'report-resolved-at'})
+
+            self.add_tag('p', parent_selector=report_selector,
+                                      content=f"Report Author: {report.get('report_author', 'N/A')}",
+                                      attributes={'class': 'report-author'})        
+
+    def generate_html_from_toml(self, toml_file):
+        file_name = os.path.basename(toml_file)
+        file_id = os.path.splitext(file_name)[0]
+        section_id = f"incident-{file_id}-hidden"
+        section_selector = f"#{section_id}"
+
+        print(f"Generating HTML for TOML file: {toml_file}, section ID: {section_id}")
+        
+        try:
+            toml_path = os.path.join(CONTENT_FOLDER, toml_file)
+            with open(toml_path, 'r', encoding='utf-8') as f:
+                self.data = toml.load(f)
+        except Exception as e:
+            print(f"Error loading TOML file: {toml_file}", e)
+            return False
+    
+        section_attributes = {}
+        section_attributes['hidden'] = 'true'
+        
+        try:
+            self.add_section(section_id, "incident-section-hidden", attributes=section_attributes)
+        except Exception as e:
+            print(f"Error adding section for file: {toml_file}", e)
+            return False
+        
+        report_id = f"report-{file_id}-hidden"
         report_selector = f"#{report_id}"
         self.add_tag('div', parent_selector=section_selector,
                                    attributes={'class': 'incident-report', 'id': report_id})
@@ -361,6 +437,7 @@ class TagGenerator:
             self.add_tag('p', parent_selector=f"{report_selector} .postmortem-info",
                                       content=f"Review Date: {postmortem.get('review_date', 'N/A')}",
                                       attributes={'class': 'review-date'})
+            
 
         return True
     

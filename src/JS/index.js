@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const cards = Array.from(document.querySelectorAll(".incident-section"));
+    const cards = Array.from(document.querySelectorAll(".incident-section"))
     const modal = document.querySelector(".modal");
     const modalContent = document.querySelector(".modal-content");
+
     if (cards.length === 0) return;
     const container = cards[0].parentElement;
 
@@ -22,8 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const titleB = b.querySelector("h2") ? b.querySelector("h2").textContent.trim() : "";
         return titleA.localeCompare(titleB);
     });
-    
-
 
     // sortedCardsNewToOld.forEach((card) => container.appendChild(card));
     sortedCardsOldToNew.forEach((card) => container.appendChild(card));
@@ -31,13 +30,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     cards.forEach((card) => {
         card.addEventListener("click", () => {
-        if (modal.style.display === "block") {
-            modal.style.display = "none";
-            modalContent.innerHTML = "";
-        } else {
-            modalContent.innerHTML = card.innerHTML;
-            modal.style.display = "block";
-        }
+            const fullCard = document.querySelector(`#${card.getAttribute('data-product-id')}-hidden`);
+
+            if (modal.style.display === "block") {
+                modal.style.display = "none";
+                modalContent.innerHTML = "";
+            } else {
+                modalContent.innerHTML = fullCard.innerHTML;
+                modal.style.display = "block";
+            }
         });
     });
     window.onclick = function(event) {
