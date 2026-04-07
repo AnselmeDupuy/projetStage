@@ -29,7 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // sortedCardsAlphabetically.forEach((card) => container.appendChild(card));
 
     cards.forEach((card) => {
-        card.addEventListener("click", () => {
+        const button = card.querySelector(".toggle-details-btn");
+        button.addEventListener("click", () => {
             const fullCard = document.querySelector(`#${card.getAttribute('data-product-id')}-hidden`);
 
             if (modal.style.display === "block") {

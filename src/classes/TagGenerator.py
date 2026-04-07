@@ -167,7 +167,10 @@ class TagGenerator:
 
             self.add_tag('p', parent_selector=report_selector,
                                       content=f"Report Author: {report.get('report_author', 'N/A')}",
-                                      attributes={'class': 'report-author'})        
+                                      attributes={'class': 'report-author'})     
+            self.add_tag('button', parent_selector=report_selector,
+                                      content='Show Details',
+                                      attributes={'class': 'toggle-details-btn', 'data-target': f"#{section_id}-hidden"})   
 
     def generate_html_from_toml(self, toml_file):
         file_name = os.path.basename(toml_file)
