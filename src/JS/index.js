@@ -2,31 +2,87 @@ document.addEventListener("DOMContentLoaded", () => {
     const cards = Array.from(document.querySelectorAll(".incident-section"))
     const modal = document.querySelector(".modal");
     const modalContent = document.querySelector(".modal-content");
+    const navItems = Array.from(document.querySelectorAll(".nav-item"));
 
-    if (cards.length === 0) return;
-    const container = cards[0].parentElement;
+    const sortNewToOldBtn = document.getElementById("sort-new-to-old-btn");
+    const sortOldToNewBtn = document.getElementById("sort-old-to-new-btn");
+    const sortAlphabeticallyBtn = document.getElementById("sort-alphabetically-btn");
 
-    const sortedCardsNewToOld = cards.sort((a, b) => {
+    if (cards.length === 0 || navItems.length === 0) return;
+    const cardsContainer = cards[0].parentElement;
+    const navContainer = navItems[0].parentElement;
+
+    const sortedNavItemsNewToOld = [...navItems].sort((a, b) => {
         const ta = Number(a.dataset.timeTs || 0);
         const tb = Number(b.dataset.timeTs || 0);
         return tb - ta;
     });
 
-    const sortedCardsOldToNew = cards.sort((a, b) => {
+    const sortedNavItemsOldToNew = [...navItems].sort((a, b) => {
         const ta = Number(a.dataset.timeTs || 0);
         const tb = Number(b.dataset.timeTs || 0);
         return ta - tb;
     });
 
-    const sortedCardsAlphabetically = cards.sort((a, b) => {
-        const titleA = a.querySelector("h2") ? a.querySelector("h2").textContent.trim() : "";
-        const titleB = b.querySelector("h2") ? b.querySelector("h2").textContent.trim() : "";
+    const getLinkedCardTitle = (navItem) => {
+        const link = navItem.querySelector("a");
+        if (!link) return "";
+
+        const targetCard = document.querySelector(link.getAttribute("href"));
+        return targetCard?.querySelector("h1")?.textContent.trim() || "";
+    };
+
+    const sortedNavItemsAlphabetically = [...navItems].sort((a, b) => {
+        const titleA = getLinkedCardTitle(a);
+        const titleB = getLinkedCardTitle(b);
         return titleA.localeCompare(titleB);
     });
 
-    // sortedCardsNewToOld.forEach((card) => container.appendChild(card));
-    sortedCardsOldToNew.forEach((card) => container.appendChild(card));
-    // sortedCardsAlphabetically.forEach((card) => container.appendChild(card));
+    const sortedCardsNewToOld = [...cards].sort((a, b) => {
+        const ta = Number(a.dataset.timeTs || 0);
+        const tb = Number(b.dataset.timeTs || 0);
+        return tb - ta;
+    });
+
+    const sortedCardsOldToNew = [...cards].sort((a, b) => {
+        const ta = Number(a.dataset.timeTs || 0);
+        const tb = Number(b.dataset.timeTs || 0);
+        return ta - tb;
+    });
+
+    const sortedCardsAlphabetically = [...cards].sort((a, b) => {
+        const titleA = a.querySelector("h1") ? a.querySelector("h1").textContent.trim() : "";
+        const titleB = b.querySelector("h1") ? b.querySelector("h1").textContent.trim() : "";
+        return titleA.localeCompare(titleB);
+    });
+
+    const applyOrder = (orderedCards, orderedNavItems) => {
+        orderedCards.forEach((card) => cardsContainer.appendChild(card));
+        orderedNavItems.forEach((item) => navContainer.appendChild(item));
+    };
+
+    if (sortNewToOldBtn) {
+        sortNewToOldBtn.addEventListener("click", (event) => {
+            event.preventDefault();
+            applyOrder(sortedCardsNewToOld, sortedNavItemsNewToOld);
+        });
+    }
+
+    if (sortOldToNewBtn) {
+        sortOldToNewBtn.addEventListener("click", (event) => {
+            event.preventDefault();
+            applyOrder(sortedCardsOldToNew, sortedNavItemsOldToNew);
+
+        });
+    }
+
+    if (sortAlphabeticallyBtn) {
+        sortAlphabeticallyBtn.addEventListener("click", (event) => {
+            event.preventDefault();
+            applyOrder(sortedCardsAlphabetically, sortedNavItemsAlphabetically);
+        });
+    }
+
 
     cards.forEach((card) => {
         const button = card.querySelector(".toggle-details-btn");
@@ -42,6 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
+
     window.onclick = function(event) {
         if (event.target === modal) {
         modal.style.display = "none";

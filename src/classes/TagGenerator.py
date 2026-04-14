@@ -78,15 +78,25 @@ class TagGenerator:
     
     def generate_nav_items(self, files):
         nav_items = []
+
+        self.add_tag('button', parent_selector='nav', content='Sort by Newest', attributes={'id': 'sort-new-to-old-btn'})
+        self.add_tag('button', parent_selector='nav', content='Sort by Oldest', attributes={'id': 'sort-old-to-new-btn'})
+        self.add_tag('button', parent_selector='nav', content='Sort Alphabetically', attributes={'id': 'sort-alphabetically-btn'})
         for file in files:
             file_id = os.path.splitext(os.path.basename(file))[0]
-            
+
+            created_at = None
+            with open(os.path.join(CONTENT_FOLDER, file), 'r', encoding='utf-8') as f:
+                data = toml.load(f)
+                created_at = data.get('report', {}).get('created_at')
+
             section_id = f"incident-{file_id}"
-            self.add_tag('li', parent_selector='nav ul')
+            self.add_tag('li', parent_selector='nav ul', attributes={'data-time': created_at, 'class': 'nav-item', 'data-time-ts': str(int(datetime.fromisoformat(created_at).timestamp()))})
             self.add_tag('a', parent_selector='nav ul li:last-child', content=file_id, attributes={'href': f"#{section_id}"})
         return nav_items
     
     def generate_card_info(self, toml_file):
+        """Generation des carte affichées sur la page d'accueil, avec les informations de base du rapport d'incident"""
         file_name = os.path.basename(toml_file)
         file_id = os.path.splitext(file_name)[0]
         section_id = f"incident-{file_id}"
