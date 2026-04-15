@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const sortNewToOldBtn = document.getElementById("sort-new-to-old-btn");
     const sortOldToNewBtn = document.getElementById("sort-old-to-new-btn");
     const sortAlphabeticallyBtn = document.getElementById("sort-alphabetically-btn");
+    const sortSeverityBtn = document.getElementById("sort-severity-btn");
 
     if (cards.length === 0 || navItems.length === 0) return;
     const cardsContainer = cards[0].parentElement;
@@ -38,6 +39,12 @@ document.addEventListener("DOMContentLoaded", () => {
         return titleA.localeCompare(titleB);
     });
 
+    const sortedNavItemsSeverity = [...navItems].sort((a, b) => {
+        const severityA = Number(a.dataset.severity || 0);
+        const severityB = Number(b.dataset.severity || 0);
+        return severityB - severityA;
+    });
+
     const sortedCardsNewToOld = [...cards].sort((a, b) => {
         const ta = Number(a.dataset.timeTs || 0);
         const tb = Number(b.dataset.timeTs || 0);
@@ -56,6 +63,12 @@ document.addEventListener("DOMContentLoaded", () => {
         return titleA.localeCompare(titleB);
     });
 
+    const sortedCardsSeverity = [...cards].sort((a, b) => {
+        const severityA = Number(a.dataset.severity || 0);
+        const severityB = Number(b.dataset.severity || 0);
+        return severityB - severityA;
+    });
+
     const applyOrder = (orderedCards, orderedNavItems) => {
         orderedCards.forEach((card) => cardsContainer.appendChild(card));
         orderedNavItems.forEach((item) => navContainer.appendChild(item));
@@ -63,14 +76,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (sortNewToOldBtn) {
         sortNewToOldBtn.addEventListener("click", (event) => {
-            event.preventDefault();
             applyOrder(sortedCardsNewToOld, sortedNavItemsNewToOld);
         });
     }
 
     if (sortOldToNewBtn) {
         sortOldToNewBtn.addEventListener("click", (event) => {
-            event.preventDefault();
             applyOrder(sortedCardsOldToNew, sortedNavItemsOldToNew);
 
         });
@@ -78,8 +89,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (sortAlphabeticallyBtn) {
         sortAlphabeticallyBtn.addEventListener("click", (event) => {
-            event.preventDefault();
             applyOrder(sortedCardsAlphabetically, sortedNavItemsAlphabetically);
+        });
+    }
+
+    if (sortSeverityBtn) {
+        sortSeverityBtn.addEventListener("click", (event) => {
+            applyOrder(sortedCardsSeverity, sortedNavItemsSeverity);
         });
     }
 

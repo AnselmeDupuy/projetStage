@@ -79,9 +79,22 @@ class TagGenerator:
     def generate_nav_items(self, files):
         nav_items = []
 
-        self.add_tag('button', parent_selector='nav', content='Sort by Newest', attributes={'id': 'sort-new-to-old-btn'})
-        self.add_tag('button', parent_selector='nav', content='Sort by Oldest', attributes={'id': 'sort-old-to-new-btn'})
-        self.add_tag('button', parent_selector='nav', content='Sort Alphabetically', attributes={'id': 'sort-alphabetically-btn'})
+        radio_options = [
+            ("sort-new-to-old-btn", "Sort by Newest"),
+            ("sort-old-to-new-btn", "Sort by Oldest"),
+            ("sort-alphabetically-btn", "Sort Alphabetically"),
+            ("sort-severity-btn", "Sort by Severity"),
+        ]
+
+        for idx, (radio_id, label_text) in enumerate(radio_options):
+            self.add_tag('div', parent_selector='nav div', attributes={'class': 'sort-option'})
+            input_attributes = {'id': radio_id, 'type': 'radio', 'name': 'sort', 'value': radio_id}
+            if idx == 0:
+                input_attributes['checked'] = 'checked'
+
+            self.add_tag('input', parent_selector='nav div .sort-option:last-child', attributes=input_attributes)
+            self.add_tag('label', parent_selector='nav div .sort-option:last-child', content=label_text, attributes={'for': radio_id})
+
         for file in files:
             file_id = os.path.splitext(os.path.basename(file))[0]
 
@@ -161,7 +174,7 @@ class TagGenerator:
 
             self.add_tag('p', parent_selector=report_selector,
                                       content=f"Severity: {report.get('severity', 'N/A')}",
-                                      attributes={'class': 'report-severity'})
+                                      attributes={'class': 'report-severity', 'data-severity': report.get('severity', 'N/A').lower()})
 
             self.add_tag('p', parent_selector=report_selector,
                                       content=f"Category: {report.get('category', 'N/A')}",

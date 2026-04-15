@@ -12,6 +12,32 @@
   <h1>
    Incidents
   </h1>
+  <div class="search-container">
+   <div class="sort-option">
+    <input checked="checked" id="sort-new-to-old-btn" name="sort" type="radio" value="sort-new-to-old-btn"/>
+    <label for="sort-new-to-old-btn">
+     Sort by Newest
+    </label>
+   </div>
+   <div class="sort-option">
+    <input id="sort-old-to-new-btn" name="sort" type="radio" value="sort-old-to-new-btn"/>
+    <label for="sort-old-to-new-btn">
+     Sort by Oldest
+    </label>
+   </div>
+   <div class="sort-option">
+    <input id="sort-alphabetically-btn" name="sort" type="radio" value="sort-alphabetically-btn"/>
+    <label for="sort-alphabetically-btn">
+     Sort Alphabetically
+    </label>
+   </div>
+   <div class="sort-option">
+    <input id="sort-severity-btn" name="sort" type="radio" value="sort-severity-btn"/>
+    <label for="sort-severity-btn">
+     Sort by Severity
+    </label>
+   </div>
+  </div>
   <ul>
    <li class="nav-item" data-time="2026-03-11T12:09:34" data-time-ts="1773227374">
     <a href="#incident-Customer_Portal_Login_Latency">
@@ -34,15 +60,6 @@
     </a>
    </li>
   </ul>
-  <button id="sort-new-to-old-btn">
-   Sort by Newest
-  </button>
-  <button id="sort-old-to-new-btn">
-   Sort by Oldest
-  </button>
-  <button id="sort-alphabetically-btn">
-   Sort Alphabetically
-  </button>
  </nav>
  <body>
   <div class="modal" id="modal">
@@ -67,8 +84,8 @@
     <p class="report-priority">
      Priority: High
     </p>
-    <p class="report-severity">
-     Severity: Major
+    <p class="report-severity" data-severity="1">
+     Severity: 1
     </p>
     <p class="report-category">
      Category: Customer Experience
@@ -106,7 +123,7 @@
      Priority: High
     </p>
     <p class="report-severity">
-     Severity: Major
+     Severity: 1
     </p>
     <p class="report-category">
      Category: Customer Experience
@@ -329,8 +346,8 @@
     <p class="report-priority">
      Priority: High
     </p>
-    <p class="report-severity">
-     Severity: Major
+    <p class="report-severity" data-severity="5">
+     Severity: 5
     </p>
     <p class="report-category">
      Category: IT Infrastructure
@@ -368,7 +385,7 @@
      Priority: High
     </p>
     <p class="report-severity">
-     Severity: Major
+     Severity: 5
     </p>
     <p class="report-category">
      Category: IT Infrastructure
@@ -591,8 +608,8 @@
     <p class="report-priority">
      Priority: Low
     </p>
-    <p class="report-severity">
-     Severity: Minor
+    <p class="report-severity" data-severity="3">
+     Severity: 3
     </p>
     <p class="report-category">
      Category: Finance Systems
@@ -630,7 +647,7 @@
      Priority: Low
     </p>
     <p class="report-severity">
-     Severity: Minor
+     Severity: 3
     </p>
     <p class="report-category">
      Category: Finance Systems
@@ -853,8 +870,8 @@
     <p class="report-priority">
      Priority: Medium
     </p>
-    <p class="report-severity">
-     Severity: Moderate
+    <p class="report-severity" data-severity="4">
+     Severity: 4
     </p>
     <p class="report-category">
      Category: Operations Systems
@@ -892,7 +909,7 @@
      Priority: Medium
     </p>
     <p class="report-severity">
-     Severity: Moderate
+     Severity: 4
     </p>
     <p class="report-category">
      Category: Operations Systems
