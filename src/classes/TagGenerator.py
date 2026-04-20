@@ -87,13 +87,13 @@ class TagGenerator:
         ]
 
         for idx, (radio_id, label_text) in enumerate(radio_options):
-            self.add_tag('div', parent_selector='nav div', attributes={'class': 'sort-option'})
+            self.add_tag('div', parent_selector='nav .nav-menu .search-container', attributes={'class': 'sort-option'})
             input_attributes = {'id': radio_id, 'type': 'radio', 'name': 'sort', 'value': radio_id}
             if idx == 0:
                 input_attributes['checked'] = 'checked'
 
-            self.add_tag('input', parent_selector='nav div .sort-option:last-child', attributes=input_attributes)
-            self.add_tag('label', parent_selector='nav div .sort-option:last-child', content=label_text, attributes={'for': radio_id})
+            self.add_tag('input', parent_selector='nav .nav-menu .search-container .sort-option:last-child', attributes=input_attributes)
+            self.add_tag('label', parent_selector='nav .nav-menu .search-container .sort-option:last-child', content=label_text, attributes={'for': radio_id})
 
         for file in files:
             file_id = os.path.splitext(os.path.basename(file))[0]

@@ -9,57 +9,64 @@
   </title>
  </head>
  <nav>
-  <h1>
-   Incidents
-  </h1>
-  <div class="search-container">
-   <div class="sort-option">
-    <input checked="checked" id="sort-new-to-old-btn" name="sort" type="radio" value="sort-new-to-old-btn"/>
-    <label for="sort-new-to-old-btn">
-     Sort by Newest
-    </label>
-   </div>
-   <div class="sort-option">
-    <input id="sort-old-to-new-btn" name="sort" type="radio" value="sort-old-to-new-btn"/>
-    <label for="sort-old-to-new-btn">
-     Sort by Oldest
-    </label>
-   </div>
-   <div class="sort-option">
-    <input id="sort-alphabetically-btn" name="sort" type="radio" value="sort-alphabetically-btn"/>
-    <label for="sort-alphabetically-btn">
-     Sort Alphabetically
-    </label>
-   </div>
-   <div class="sort-option">
-    <input id="sort-severity-btn" name="sort" type="radio" value="sort-severity-btn"/>
-    <label for="sort-severity-btn">
-     Sort by Severity
-    </label>
-   </div>
+  <div class="nav-header">
+   <button aria-controls="nav-menu" aria-expanded="false" aria-label="Toggle navigation" class="nav-toggle" id="nav-toggle-btn" type="button">
+    Menu
+   </button>
+   <h1>
+    Incidents
+   </h1>
   </div>
-  <ul>
-   <li class="nav-item" data-time="2026-03-11T12:09:34" data-time-ts="1773227374">
-    <a href="#incident-Customer_Portal_Login_Latency">
-     Customer_Portal_Login_Latency
-    </a>
-   </li>
-   <li class="nav-item" data-time="2026-03-09T08:42:11" data-time-ts="1773042131">
-    <a href="#incident-Order_Processing_System_Outage">
-     Order_Processing_System_Outage
-    </a>
-   </li>
-   <li class="nav-item" data-time="2026-03-12T21:03:51" data-time-ts="1773345831">
-    <a href="#incident-Payment_Reconciliation_Batch_Drift">
-     Payment_Reconciliation_Batch_Drift
-    </a>
-   </li>
-   <li class="nav-item" data-time="2026-03-10T06:14:02" data-time-ts="1773119642">
-    <a href="#incident-Warehouse_Scanner_Sync_Failure">
-     Warehouse_Scanner_Sync_Failure
-    </a>
-   </li>
-  </ul>
+  <div class="nav-menu" id="nav-menu">
+   <div class="search-container">
+    <div class="sort-option">
+     <input checked="checked" id="sort-new-to-old-btn" name="sort" type="radio" value="sort-new-to-old-btn"/>
+     <label for="sort-new-to-old-btn">
+      Sort by Newest
+     </label>
+    </div>
+    <div class="sort-option">
+     <input id="sort-old-to-new-btn" name="sort" type="radio" value="sort-old-to-new-btn"/>
+     <label for="sort-old-to-new-btn">
+      Sort by Oldest
+     </label>
+    </div>
+    <div class="sort-option">
+     <input id="sort-alphabetically-btn" name="sort" type="radio" value="sort-alphabetically-btn"/>
+     <label for="sort-alphabetically-btn">
+      Sort Alphabetically
+     </label>
+    </div>
+    <div class="sort-option">
+     <input id="sort-severity-btn" name="sort" type="radio" value="sort-severity-btn"/>
+     <label for="sort-severity-btn">
+      Sort by Severity
+     </label>
+    </div>
+   </div>
+   <ul>
+    <li class="nav-item" data-time="2026-03-11T12:09:34" data-time-ts="1773227374">
+     <a href="#incident-Customer_Portal_Login_Latency">
+      Customer_Portal_Login_Latency
+     </a>
+    </li>
+    <li class="nav-item" data-time="2026-03-09T08:42:11" data-time-ts="1773042131">
+     <a href="#incident-Order_Processing_System_Outage">
+      Order_Processing_System_Outage
+     </a>
+    </li>
+    <li class="nav-item" data-time="2026-03-12T21:03:51" data-time-ts="1773345831">
+     <a href="#incident-Payment_Reconciliation_Batch_Drift">
+      Payment_Reconciliation_Batch_Drift
+     </a>
+    </li>
+    <li class="nav-item" data-time="2026-03-10T06:14:02" data-time-ts="1773119642">
+     <a href="#incident-Warehouse_Scanner_Sync_Failure">
+      Warehouse_Scanner_Sync_Failure
+     </a>
+    </li>
+   </ul>
+  </div>
  </nav>
  <body>
   <div class="modal" id="modal">

@@ -1,5 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     const cards = Array.from(document.querySelectorAll(".incident-section"))
+    const nav = document.querySelector("nav");
+    const navToggleBtn = document.getElementById("nav-toggle-btn");
+    const navLinks = Array.from(document.querySelectorAll("nav .nav-item a"));
     const modal = document.querySelector(".modal");
     const modalContent = document.querySelector(".modal-content");
     const navItems = Array.from(document.querySelectorAll(".nav-item"));
@@ -96,6 +99,29 @@ document.addEventListener("DOMContentLoaded", () => {
     if (sortSeverityBtn) {
         sortSeverityBtn.addEventListener("click", (event) => {
             applyOrder(sortedCardsSeverity, sortedNavItemsSeverity);
+        });
+    }
+
+    if (nav && navToggleBtn) {
+        navToggleBtn.addEventListener("click", () => {
+            nav.classList.toggle("nav-open");
+            navToggleBtn.setAttribute("aria-expanded", String(nav.classList.contains("nav-open")));
+        });
+
+        navLinks.forEach((link) => {
+            link.addEventListener("click", () => {
+                if (window.innerWidth <= 1100) {
+                    nav.classList.remove("nav-open");
+                    navToggleBtn.setAttribute("aria-expanded", "false");
+                }
+            });
+        });
+
+        window.addEventListener("resize", () => {
+            if (window.innerWidth > 1100) {
+                nav.classList.remove("nav-open");
+                navToggleBtn.setAttribute("aria-expanded", "false");
+            }
         });
     }
 
