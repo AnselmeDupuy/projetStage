@@ -5,12 +5,14 @@ from csscompressor import compress as css_compress
 from jsmin import jsmin
 import classes.TagGenerator as TagGenerator
 import classes.NavGen as NavGen
+import classes.ChartData as ChartData
 
 def generate_html():
     html_file = 'templates/index.html'
     toml_folder = 'src/content'
     tag_generator = TagGenerator.TagGenerator(html_file, toml_folder)
     files = []
+    chart_data = {}
     
 
     files = NavGen.NavGen().get_files()
@@ -24,7 +26,9 @@ def generate_html():
     for file in files:
         tag_generator.generate_card_info(file)
         tag_generator.generate_html_from_toml(file)
-
+        chart_data[file] = ChartData.ChartData(file).get_impact_data()
+        
+    ChartData.ChartData(html_file).send_impact_data_to_JS()    
     
     tag_generator.generate_JS(html_file)
     tag_generator.save_html("incidents/test.html")

@@ -248,21 +248,6 @@
     }
 }
 
-@media (max-width: 1100px) {
-    .incident-section {
-        width: 100%;
-        border: 1px solid white;
-        border-radius: 0.5rem;
-        box-shadow: white 0px 0px 10px;
-        padding: 1rem;
-        margin: 1rem;
-        max-height: 280px;
-        overflow: hidden;
-        transition: max-height 0.35s ease, box-shadow 0.2s ease;
-        color: white;
-    }
-}
-
 .search-container {
     display: flex;
     flex-direction: column;
@@ -365,6 +350,18 @@
     body {
         margin-left: var(--nav-collapsed-width);
     }
+    .incident-section {
+        width: 100%;
+        border: 1px solid white;
+        border-radius: 0.5rem;
+        box-shadow: white 0px 0px 10px;
+        padding: 1rem;
+        margin: 1rem;
+        max-height: 280px;
+        overflow: hidden;
+        transition: max-height 0.35s ease, box-shadow 0.2s ease;
+        color: white;
+    }
 }
 
 .incident-section .report-title,
@@ -402,5 +399,9 @@
 .toggle-details-btn:active {
     transform: translateY(0);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+}
+
+.graph-container {
+    width: 100%;
 }
 
