@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 from datetime import datetime
 from bs4 import BeautifulSoup
 import toml
@@ -467,9 +468,23 @@ class TagGenerator:
 
         return True
     
-    def save_html(self, output_file=None):
+    def save_html(self, output_file=None, chart_data=None):
         if self.soup is None:
             raise ValueError("No HTML loaded to save")
+
+        if chart_data is not None:
+            existing_tag = self.soup.select_one('#impact-data')
+            if existing_tag:
+                existing_tag.decompose()
+
+            script_tag = self.soup.new_tag('script', id='impact-data', type='application/json')
+            script_tag.string = json.dumps(chart_data)
+            body = self.soup.body
+
+            if body is None:
+                raise ValueError("HTML document has no body element")
+
+            body.append(script_tag)
         
         output_path = output_file if output_file else self.html_file
         

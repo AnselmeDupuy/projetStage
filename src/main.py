@@ -27,11 +27,11 @@ def generate_html():
         tag_generator.generate_card_info(file)
         tag_generator.generate_html_from_toml(file)
         chart_data[file] = ChartData.ChartData(file).get_impact_data()
-        
-    ChartData.ChartData(html_file).send_impact_data_to_JS()    
+
+    print(chart_data)  
     
     tag_generator.generate_JS(html_file)
-    tag_generator.save_html("incidents/test.html")
+    tag_generator.save_html("incidents/test.html", chart_data)
 
 
 def main():
