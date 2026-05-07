@@ -8,11 +8,13 @@ import toml
 from paths import BASE_DIR, CONTENT_FOLDER
 
 class TagGenerator:
+    """Classe pour g\u00e9n\u00e9rer dynamiquement les \u00e9l\u00e9ments HTML \u00e0 partir de donn\u00e9es TOML d'incidents"""
     def __init__(self, html_file, toml_folder):
+        """Initialise avec le fichier HTML template et le dossier contenant les TOML"""
         self.html_file = html_file
         self.toml_folder = toml_folder
-        self.data = None
-        self.infos = None
+        self.data = None  # Stocker les donnees TOML actuelles
+        self.infos = None  # Stocker les informations du rapport
 
         self.base_dir = BASE_DIR
         self.folder = CONTENT_FOLDER
@@ -25,6 +27,7 @@ class TagGenerator:
         except FileNotFoundError:
             print("no content folder found")
         
+        # Parse le fichier HTML template avec BeautifulSoup
         try:
             with open(self.html_file, 'r', encoding='utf-8') as file:
                 self.soup = BeautifulSoup(file, 'html.parser')
@@ -32,6 +35,7 @@ class TagGenerator:
             print("no html file given", e)
 
     def add_section(self, product_id, css_class, parent_tag = "body", attributes=None):
+        """Ajoute une nouvelle section (div) au DOM avec un ID et des attributs specifiques"""
         parent = self.soup.select_one(parent_tag)
 
         if not parent:
@@ -47,13 +51,12 @@ class TagGenerator:
             for key, value in attributes.items():
                 section[key] = value
 
-
         parent.append(section)
         return section
         
     
     def add_tag(self, tag_name, parent_selector='body', content='', attributes=None, position='append'):
-        
+        """Ajoute un element HTML avec contenu et attributs optionnels au parent specifie"""
         parent = self.soup.select_one(parent_selector)
 
         if not parent:
@@ -68,6 +71,7 @@ class TagGenerator:
             for key, value in attributes.items():
                 new_tag[key] = value
         
+        # Positionne l'element au sein du parent (append, prepend, ou before)
         if position == 'append':
             parent.append(new_tag)
         elif position == 'prepend':
@@ -197,6 +201,7 @@ class TagGenerator:
                                       attributes={'class': 'toggle-details-btn', 'data-target': f"#{section_id}-hidden"})   
 
     def generate_html_from_toml(self, toml_file):
+        """Genere les details complets du rapport d'incident (cache) a partir d'un fichier TOML"""
         file_name = os.path.basename(toml_file)
         file_id = os.path.splitext(file_name)[0]
         section_id = f"incident-{file_id}-hidden"
@@ -494,10 +499,12 @@ class TagGenerator:
 
 
 
-    def generate_JS(self, html_file):
+    def generate_JS(self):
         try:
             attributes= {'src' : '../JS/index.js'}
+            attributes2 = {'src' : '../JS/chart.js'}
             self.add_tag('script', 'body', '', attributes)
+            self.add_tag('script', 'body', '', attributes2)
             return True
         except Exception as e:
             print(f'Erreur : ', e)

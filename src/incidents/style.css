@@ -147,8 +147,8 @@
         top: 0;
         bottom: 0;
         left: 0;
-        border: 3px solid blue;
-        background-color: #150d36;
+        /* border: 3px solid blue;
+        background-color: #150d36; */
         width: 20%;
         padding: 1em;
         color: white;
@@ -294,7 +294,7 @@
     display: block;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
     :root {
         --nav-collapsed-width: 4.2rem;
         --nav-expanded-width: 18rem;
