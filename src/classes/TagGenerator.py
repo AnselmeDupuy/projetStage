@@ -34,7 +34,7 @@ class TagGenerator:
         except Exception as e:
             print("no html file given", e)
 
-    def add_section(self, product_id, css_class, parent_tag = "body", attributes=None):
+    def add_section(self, product_id, css_class, parent_tag = "main", attributes=None):
         """Ajoute une nouvelle section (div) au DOM avec un ID et des attributs specifiques"""
         parent = self.soup.select_one(parent_tag)
 
