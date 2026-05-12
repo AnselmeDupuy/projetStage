@@ -1,14 +1,22 @@
 import os
 import sys
 import json
+import re
 from datetime import datetime
 from bs4 import BeautifulSoup
 import toml
+from csscompressor import compress as css_compress
+from jsmin import jsmin
+
+try:
+    import htmlmin
+except Exception:
+    htmlmin = None
 
 from paths import BASE_DIR, CONTENT_FOLDER
 
 class TagGenerator:
-    """Classe pour g\u00e9n\u00e9rer dynamiquement les \u00e9l\u00e9ments HTML \u00e0 partir de donn\u00e9es TOML d'incidents"""
+    """Classe pour generer dynamiquement les elements HTML a partir de donnees TOML d'incidents"""
     def __init__(self, html_file, toml_folder):
         """Initialise avec le fichier HTML template et le dossier contenant les TOML"""
         self.html_file = html_file
@@ -477,6 +485,8 @@ class TagGenerator:
         if self.soup is None:
             raise ValueError("No HTML loaded to save")
 
+        self.inline_stylesheet()
+
         if chart_data is not None:
             existing_tag = self.soup.select_one('#impact-data')
             if existing_tag:
@@ -492,20 +502,232 @@ class TagGenerator:
             body.append(script_tag)
         
         output_path = output_file if output_file else self.html_file
+
+        html_output = str(self.soup)
+        html_output = self.minify_html_output(html_output)
         
         with open(output_path, 'w', encoding='utf-8') as file:
-            file.write(str(self.soup.prettify()))
+            file.write(html_output)
+
+
+    def inline_stylesheet(self):
+        """Inline the template stylesheet into the generated HTML."""
+        if self.soup is None:
+            return False
+
+        link_tag = self.soup.find('link', rel='stylesheet', href=True)
+        if link_tag is None:
+            return False
+
+        css_path = os.path.join(self.base_dir, 'incidents', link_tag['href'])
+
+        try:
+            with open(css_path, 'r', encoding='utf-8') as css_file:
+                css_content = css_file.read()
+
+            style_tag = self.soup.new_tag('style')
+            style_tag.string = self.safe_css_minify(css_content)
+            link_tag.replace_with(style_tag)
+            return True
+        except Exception as e:
+            print(f"Error inlining CSS: {e}")
+            return False
+
+
+    def safe_css_minify(self, css_content: str) -> str:
+        try:
+            return css_compress(css_content)
+        except Exception:
+            return css_content
+
+
+    def safe_js_minify(self, js_content: str) -> str:
+        try:
+            return jsmin(js_content)
+        except Exception:
+            return js_content
+
+
+    def minify_html_output(self, html_content: str) -> str:
+        if htmlmin is not None:
+            try:
+                return htmlmin.minify(html_content, remove_empty_space=True, remove_comments=True)
+            except Exception:
+                pass
+
+        html_content = re.sub(r'>\s+<', '><', html_content)
+        html_content = re.sub(r'\s{2,}', ' ', html_content)
+        return html_content.strip()
 
 
 
 
     def generate_JS(self):
         try:
-            attributes= {'src' : '../JS/index.js'}
-            attributes2 = {'src' : '../JS/chart.js'}
-            self.add_tag('script', 'body', '', attributes)
-            self.add_tag('script', 'body', '', attributes2)
+            index_js_path = os.path.join(self.base_dir, 'JS', 'index.js')
+
+            with open(index_js_path, 'r', encoding='utf-8') as index_js_file:
+                index_js_content = index_js_file.read()
+
+            self.add_tag('script', 'body', content=self.safe_js_minify(index_js_content))
+
+            chart_script = self.build_standalone_chart_script()
+            self.add_tag('script', 'body', content=self.safe_js_minify(chart_script))
             return True
         except Exception as e:
             print(f'Erreur : ', e)
+
+
+    def build_standalone_chart_script(self):
+        return '''document.addEventListener("DOMContentLoaded", () => {
+    const dataScript = document.getElementById("impact-data");
+    const canvas = document.getElementById("graph");
+
+    if (!dataScript || !canvas) {
+        return;
+    }
+
+    let impactData = {};
+
+    try {
+        impactData = JSON.parse(dataScript.textContent || "{}");
+    } catch (error) {
+        console.error("Unable to parse chart data", error);
+        return;
+    }
+
+    const context = canvas.getContext("2d");
+    if (!context) {
+        return;
+    }
+
+    const entries = Object.entries(impactData).map(([fileName, item]) => ({
+        label: fileName.replace(/\.toml$/i, ""),
+        value: Number(item && item.estimated_revenue_loss_eur != null ? item.estimated_revenue_loss_eur : 0),
+    }));
+
+    const formatCurrency = (value) => `€${Number(value).toLocaleString()}`;
+
+    const resizeCanvas = () => {
+        const container = canvas.parentElement;
+        const containerWidth = container ? container.clientWidth : 0;
+        const width = Math.max(320, Math.floor(containerWidth || canvas.clientWidth || 800));
+        const height = Math.max(320, Math.floor(width * 0.42));
+        const pixelRatio = window.devicePixelRatio || 1;
+
+        canvas.style.width = "100%";
+        canvas.style.height = `${height}px`;
+        canvas.width = Math.floor(width * pixelRatio);
+        canvas.height = Math.floor(height * pixelRatio);
+        context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+
+        return { width, height };
+    };
+
+    const drawRoundedRect = (x, y, width, height, radius) => {
+        const normalizedRadius = Math.min(radius, width / 2, height / 2);
+
+        context.beginPath();
+        context.moveTo(x + normalizedRadius, y);
+        context.arcTo(x + width, y, x + width, y + height, normalizedRadius);
+        context.arcTo(x + width, y + height, x, y + height, normalizedRadius);
+        context.arcTo(x, y + height, x, y, normalizedRadius);
+        context.arcTo(x, y, x + width, y, normalizedRadius);
+        context.closePath();
+    };
+
+    const drawChart = () => {
+        const dimensions = resizeCanvas();
+        const width = dimensions.width;
+        const height = dimensions.height;
+        context.clearRect(0, 0, width, height);
+
+        context.fillStyle = "#0f172a";
+        context.fillRect(0, 0, width, height);
+
+        context.fillStyle = "#e2e8f0";
+        context.font = "600 18px sans-serif";
+        context.textAlign = "left";
+        context.textBaseline = "top";
+        context.fillText("Estimated Revenue Loss by Incident", 24, 20);
+
+        if (entries.length === 0) {
+            context.font = "400 14px sans-serif";
+            context.fillText("No chart data available.", 24, 56);
+            return;
+        }
+
+        const padding = { top: 56, right: 28, bottom: 58, left: 70 };
+        const chartWidth = width - padding.left - padding.right;
+        const chartHeight = height - padding.top - padding.bottom;
+        const maxValue = Math.max(...entries.map((entry) => entry.value), 0);
+        const safeMax = maxValue > 0 ? maxValue : 1;
+        const axisColor = "rgba(226, 232, 240, 0.25)";
+        const barColor = "rgba(245, 158, 11, 0.82)";
+        const barBorder = "rgba(245, 158, 11, 1)";
+        const barGap = 16;
+        const barWidth = Math.max(24, (chartWidth - barGap * (entries.length - 1)) / entries.length);
+
+        context.strokeStyle = axisColor;
+        context.lineWidth = 1;
+        context.beginPath();
+        context.moveTo(padding.left, padding.top);
+        context.lineTo(padding.left, padding.top + chartHeight);
+        context.lineTo(padding.left + chartWidth, padding.top + chartHeight);
+        context.stroke();
+
+        context.font = "400 12px sans-serif";
+        context.fillStyle = "rgba(226, 232, 240, 0.9)";
+        context.textAlign = "right";
+        context.textBaseline = "middle";
+
+        const tickCount = 5;
+        for (let index = 0; index <= tickCount; index += 1) {
+            const ratio = index / tickCount;
+            const value = safeMax * (1 - ratio);
+            const y = padding.top + chartHeight * ratio;
+
+            context.strokeStyle = axisColor;
+            context.beginPath();
+            context.moveTo(padding.left - 6, y);
+            context.lineTo(padding.left + chartWidth, y);
+            context.stroke();
+
+            context.fillText(formatCurrency(value), padding.left - 12, y);
+        }
+
+        context.textAlign = "center";
+        context.textBaseline = "top";
+
+        entries.forEach((entry, index) => {
+            const x = padding.left + index * (barWidth + barGap);
+            const barHeight = Math.max(0, (entry.value / safeMax) * (chartHeight - 18));
+            const y = padding.top + chartHeight - barHeight;
+
+            context.fillStyle = barColor;
+            drawRoundedRect(x, y, barWidth, barHeight, 8);
+            context.fill();
+
+            context.strokeStyle = barBorder;
+            context.stroke();
+
+            context.fillStyle = "#e2e8f0";
+            context.font = "600 12px sans-serif";
+            context.fillText(formatCurrency(entry.value), x + barWidth / 2, y - 18);
+
+            context.save();
+            context.translate(x + barWidth / 2, padding.top + chartHeight + 10);
+            context.rotate(-Math.PI / 12);
+            context.font = "400 11px sans-serif";
+            context.fillStyle = "rgba(226, 232, 240, 0.92)";
+            context.textAlign = "center";
+            context.textBaseline = "top";
+            context.fillText(entry.label, 0, 0);
+            context.restore();
+        });
+    };
+
+    drawChart();
+    window.addEventListener("resize", drawChart);
+});'''
         
