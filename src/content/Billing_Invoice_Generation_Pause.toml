@@ -1,0 +1,78 @@
+[report]
+ticket_id = "INC-8"
+title = "Billing Invoice Generation Pause"
+status = "Resolved"
+priority = "High"
+severity = "3"
+category = "Finance Systems"
+created_at = "2026-03-18T22:13:07"
+resolved_at = "2026-03-19T00:49:26"
+report_author = "Billing Operations Team"
+
+###########################################################################################
+
+[company]
+name = "Northwind Financial Operations"
+department = "Billing and Revenue Assurance"
+location = "Madrid Finance Center"
+
+###########################################################################################
+
+[incident]
+summary = "Scheduled invoice generation paused after a billing rules update caused several account tiers to fail tax calculation validation."
+affected_systems = ["Invoice Generator", "Billing Rules Engine", "Tax Calculation Service"]
+start_time = "2026-03-18T22:04:00"
+detection_time = "2026-03-18T22:11:58"
+end_time = "2026-03-19T00:37:12"
+root_cause = "A rules update introduced an unsupported tax profile for legacy enterprise accounts, blocking invoice creation."
+
+###########################################################################################
+
+[impact]
+orders_failed = 0
+orders_delayed = 384
+estimated_revenue_loss_eur = 7320
+customers_affected = 214
+support_tickets_created = 17
+
+###########################################################################################
+
+[response]
+incident_commander = "Ines Navarro"
+teams_involved = ["Billing Operations", "Tax Systems", "Revenue Assurance"]
+
+###########################################################################################
+
+[response.timeline]
+event1 = "22:11 - Invoice generation job halted on validation failures"
+event2 = "22:26 - Rules update inspected for tax profile regressions"
+event3 = "23:01 - Faulty account tier mapping corrected"
+event4 = "23:36 - Invoice batches regenerated after repair"
+event5 = "00:37 - Billing run completed successfully"
+
+###########################################################################################
+
+[resolution]
+actions_taken = [
+    "Rolled back the problematic billing rules change",
+    "Regenerated the failed invoice batches",
+    "Added a compatibility mapping for legacy tax profiles"
+]
+verification = "Invoice totals were validated against the ledger and finance approved the corrected run."
+resolved_by = "Revenue Assurance Team"
+
+###########################################################################################
+
+[postmortem]
+lessons_learned = [
+    "Billing rules updates need backward compatibility checks for legacy accounts.",
+    "Validation failures should surface earlier in the batch job."
+]
+
+preventive_actions = [
+    "Add preflight checks for tax profile compatibility",
+    "Run staged billing rule deployments with sample accounts",
+    "Alert when invoice generation stalls on validation errors"
+]
+
+review_date = "2026-03-27"

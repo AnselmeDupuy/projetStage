@@ -1,0 +1,78 @@
+[report]
+ticket_id = "INC-13"
+title = "Analytics Dashboard Stale Metrics"
+status = "Closed"
+priority = "Low"
+severity = "2"
+category = "Analytics Platform"
+created_at = "2026-03-23T10:29:58"
+resolved_at = "2026-03-23T12:08:14"
+report_author = "Business Intelligence Team"
+
+###########################################################################################
+
+[company]
+name = "Northwind Analytics"
+department = "Reporting and Insights"
+location = "Copenhagen Analytics Studio"
+
+###########################################################################################
+
+[incident]
+summary = "Several executive dashboards displayed stale metrics after a delayed warehouse refresh caused the reporting layer to continue serving cached values."
+affected_systems = ["Analytics Dashboard", "Reporting Cache", "Warehouse Metrics Feed"]
+start_time = "2026-03-23T10:17:00"
+detection_time = "2026-03-23T10:27:41"
+end_time = "2026-03-23T11:59:33"
+root_cause = "A refresh delay prevented the cache invalidation job from running on schedule, leaving outdated metrics visible."
+
+###########################################################################################
+
+[impact]
+orders_failed = 0
+orders_delayed = 0
+estimated_revenue_loss_eur = 560
+customers_affected = 0
+support_tickets_created = 6
+
+###########################################################################################
+
+[response]
+incident_commander = "Henrik Olsen"
+teams_involved = ["Business Intelligence", "Data Engineering", "Platform Operations"]
+
+###########################################################################################
+
+[response.timeline]
+event1 = "10:27 - Dashboard users reported inconsistent metric values"
+event2 = "10:39 - Refresh delay traced to upstream warehouse backlog"
+event3 = "11:05 - Cache invalidation manually triggered"
+event4 = "11:31 - Dashboards reloaded with current warehouse values"
+event5 = "11:59 - Reporting checks confirmed metrics were current"
+
+###########################################################################################
+
+[resolution]
+actions_taken = [
+    "Forced cache invalidation for the reporting layer",
+    "Reran the missed warehouse refresh job",
+    "Verified dashboard values against the source feed"
+]
+verification = "Executive dashboard values matched the refreshed warehouse dataset after invalidation."
+resolved_by = "Business Intelligence Team"
+
+###########################################################################################
+
+[postmortem]
+lessons_learned = [
+    "Dashboard cache invalidation must be tied to refresh completion.",
+    "Stale metric alerts should trigger on refresh lag, not only data errors."
+]
+
+preventive_actions = [
+    "Add refresh-lag monitoring for reporting caches",
+    "Tie cache invalidation to warehouse job completion events",
+    "Review dashboard freshness indicators for executives"
+]
+
+review_date = "2026-04-01"

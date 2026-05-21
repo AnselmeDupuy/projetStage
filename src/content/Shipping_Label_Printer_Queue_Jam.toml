@@ -1,0 +1,78 @@
+[report]
+ticket_id = "INC-11"
+title = "Shipping Label Printer Queue Jam"
+status = "Resolved"
+priority = "Low"
+severity = "1"
+category = "Warehouse Operations"
+created_at = "2026-03-21T05:26:13"
+resolved_at = "2026-03-21T06:19:52"
+report_author = "Warehouse Support Team"
+
+###########################################################################################
+
+[company]
+name = "Northwind Fulfillment Services"
+department = "Shipping Operations"
+location = "Ghent Fulfillment Site"
+
+###########################################################################################
+
+[incident]
+summary = "Shipping labels stopped printing after the printer queue jammed during a burst of manifest uploads from multiple packing stations."
+affected_systems = ["Label Printer Queue", "Shipping Manifest Service", "Packing Stations"]
+start_time = "2026-03-21T05:14:00"
+detection_time = "2026-03-21T05:24:08"
+end_time = "2026-03-21T06:11:34"
+root_cause = "A stalled printer driver process caused queued label jobs to accumulate faster than the spooler could clear them."
+
+###########################################################################################
+
+[impact]
+orders_failed = 0
+orders_delayed = 96
+estimated_revenue_loss_eur = 1240
+customers_affected = 0
+support_tickets_created = 8
+
+###########################################################################################
+
+[response]
+incident_commander = "Jonas Vermeulen"
+teams_involved = ["Warehouse Support", "Shipping Systems", "Site Operations"]
+
+###########################################################################################
+
+[response.timeline]
+event1 = "05:24 - Printing outage reported by packing supervisors"
+event2 = "05:31 - Printer queue backlog confirmed on the affected device"
+event3 = "05:43 - Stalled driver process restarted"
+event4 = "05:57 - Pending label jobs flushed from the queue"
+event5 = "06:11 - Shipping labels printed normally again"
+
+###########################################################################################
+
+[resolution]
+actions_taken = [
+    "Restarted the printer driver process",
+    "Cleared the jammed queue backlog",
+    "Moved urgent label jobs to a standby printer"
+]
+verification = "Packing stations confirmed label output and outbound shipments resumed without delay."
+resolved_by = "Site Operations Team"
+
+###########################################################################################
+
+[postmortem]
+lessons_learned = [
+    "Printer queues need watchdogs when multiple stations share a device.",
+    "Failover printing should activate automatically on spooler stalls."
+]
+
+preventive_actions = [
+    "Add health checks for printer spooler processes",
+    "Configure automatic rerouting to standby printers",
+    "Review queue limits for manifest bursts"
+]
+
+review_date = "2026-03-30"

@@ -36,7 +36,7 @@ def generate_html():
     tag_generator.generate_JS()
     
     # Sauvegarde le fichier HTML final avec les données pour les graphiques
-    tag_generator.save_html("incidents/test.html", chart_data)
+    tag_generator.save_html("incidents/incident.html", chart_data)
 
 
 def main():

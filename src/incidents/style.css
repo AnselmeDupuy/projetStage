@@ -1,31 +1,17 @@
 @media (min-width: 1201px) {
  * {
-        margin: 0;
-        padding: 0;
         box-sizing: border-box;
     }
-
-    /* :root {
-        --nav-width: 20%;
-    } */
 
     a {
         text-decoration: none;
         color: white;
     }
 
-    /* nav {
-        position: fixed;
-        box-sizing: border-box;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        border: 3px solid blue;
-        background-color: #150d36;
-        width: 20%;
-        padding: 1em;
-        color: white;
-    } */
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
 
     nav > a {
         display: block;
@@ -84,6 +70,8 @@
         overflow-y: auto;
         overflow-x: hidden;
         padding: 1rem;
+        display: flex;
+        flex-direction: column;
     }
 
     section {
@@ -102,16 +90,6 @@
         transition: max-height 0.35s ease, box-shadow 0.2s ease;
         color: white;
     }
-
-    /* .incident-section:target {
-        max-height: 2600px;
-        box-shadow: white 0px 0px 16px;
-    } */
-
-    /* .clicked {
-        max-height: 2600px;
-        box-shadow: white 0px 0px 16px;
-    } */
 
     .modal {
     display: none;
@@ -145,34 +123,10 @@
 }
 
 @media (max-width: 1900px) {
-    /* * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    } */
-/* 
-    :root {
-        --nav-width: 20%;
-    } */
-
-    /* p {
-        text-overflow: ellipsis;
-    } */
-
     a {
         text-decoration: none;
         color: white;
     }
-
-    /* nav {
-        position: fixed;
-        box-sizing: border-box;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        /* border: 3px solid blue;
-        background-color: #150d36; */
-    /* }  */
 
     nav > a {
         display: block;
@@ -231,6 +185,8 @@
         overflow-y: auto;
         overflow-x: hidden;
         padding: 1rem;
+        display: flex;
+        flex-direction: column;
     }
 
     section {
@@ -244,21 +200,10 @@
         box-shadow: white 0px 0px 10px;
         padding: 1rem;
         margin: 1rem;
-        max-height: 280px;
         overflow: hidden;
         transition: max-height 0.35s ease, box-shadow 0.2s ease;
         color: white;
     }
-
-    /* .incident-section:target {
-        max-height: 2600px;
-        box-shadow: white 0px 0px 16px;
-    } */
-
-    /* .clicked {
-        max-height: 2600px;
-        box-shadow: white 0px 0px 16px;
-    } */    
 
     .modal {
     display: none;
@@ -337,6 +282,12 @@
     display: block;
 }
 
+.nav-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
 @media (max-width: 1200px) {
     :root {
         --nav-collapsed-width: 4.2rem;
@@ -407,13 +358,12 @@
         padding: 0.85rem;
     }
     .incident-section {
-        width: 100%;
+        width: 90%;
         border: 1px solid white;
         border-radius: 0.5rem;
         box-shadow: white 0px 0px 10px;
         padding: 1rem;
         margin: 1rem;
-        max-height: 280px;
         overflow: hidden;
         transition: max-height 0.35s ease, box-shadow 0.2s ease;
         color: white;
@@ -426,6 +376,8 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    margin: 0;
+    padding: 0;
 }
 
 .toggle-details-btn {

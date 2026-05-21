@@ -1,0 +1,78 @@
+[report]
+ticket_id = "INC-5"
+title = "Inventory Allocation Mismatch"
+status = "Resolved"
+priority = "Medium"
+severity = "3"
+category = "Supply Chain Systems"
+created_at = "2026-03-15T04:27:16"
+resolved_at = "2026-03-15T07:12:44"
+report_author = "Supply Chain Systems Team"
+
+###########################################################################################
+
+[company]
+name = "Northwind Fulfillment Services"
+department = "Inventory Planning"
+location = "Rotterdam Distribution Center"
+
+###########################################################################################
+
+[incident]
+summary = "Inventory allocation records diverged from warehouse stock after a synchronization job replayed partially processed stock movements."
+affected_systems = ["Inventory Allocator", "Stock Ledger", "Warehouse Control Panel"]
+start_time = "2026-03-15T04:12:00"
+detection_time = "2026-03-15T04:25:33"
+end_time = "2026-03-15T07:01:28"
+root_cause = "A replay job re-applied stock movement events without checking allocation state, creating duplicate reservations."
+
+###########################################################################################
+
+[impact]
+orders_failed = 18
+orders_delayed = 167
+estimated_revenue_loss_eur = 5920
+customers_affected = 88
+support_tickets_created = 9
+
+###########################################################################################
+
+[response]
+incident_commander = "Marcel Dubois"
+teams_involved = ["Inventory Planning", "Warehouse Operations", "Data Platform"]
+
+###########################################################################################
+
+[response.timeline]
+event1 = "04:25 - Inventory variance alert triggered in the control panel"
+event2 = "04:39 - Replay job paused to prevent additional duplicate allocations"
+event3 = "05:08 - Conflicting stock reservations identified in the ledger"
+event4 = "06:06 - Allocation state repaired from the authoritative stock source"
+event5 = "07:01 - Warehouse pick lists aligned with available inventory"
+
+###########################################################################################
+
+[resolution]
+actions_taken = [
+    "Paused the replay pipeline",
+    "Recomputed allocation state from the stock ledger",
+    "Applied a deduplication check before reprocessing movements"
+]
+verification = "Allocation totals matched physical stock counts in spot checks across all active zones."
+resolved_by = "Data Platform Team"
+
+###########################################################################################
+
+[postmortem]
+lessons_learned = [
+    "Replay jobs in inventory systems must be idempotent.",
+    "Operational checks should compare allocations against the source stock ledger continuously."
+]
+
+preventive_actions = [
+    "Add replay deduplication to allocation workflows",
+    "Implement daily stock reconciliation alerts",
+    "Run inventory simulation tests for partial replay scenarios"
+]
+
+review_date = "2026-03-24"

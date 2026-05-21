@@ -1,0 +1,78 @@
+[report]
+ticket_id = "INC-9"
+title = "Data Warehouse Refresh Stall"
+status = "Monitoring"
+priority = "Low"
+severity = "2"
+category = "Analytics Platform"
+created_at = "2026-03-19T03:35:44"
+resolved_at = "2026-03-19T05:22:10"
+report_author = "Analytics Platform Team"
+
+###########################################################################################
+
+[company]
+name = "Northwind Analytics"
+department = "Business Intelligence"
+location = "Helsinki Analytics Center"
+
+###########################################################################################
+
+[incident]
+summary = "The nightly data warehouse refresh stalled after a transformation job encountered unexpectedly large source partitions and exceeded its execution window."
+affected_systems = ["Warehouse Refresh", "Transformation Pipeline", "Executive Dashboards"]
+start_time = "2026-03-19T03:20:00"
+detection_time = "2026-03-19T03:33:15"
+end_time = "2026-03-19T05:11:48"
+root_cause = "A source partition growth spike caused the transformation job to miss its batch window and hold downstream refresh tasks."
+
+###########################################################################################
+
+[impact]
+orders_failed = 0
+orders_delayed = 0
+estimated_revenue_loss_eur = 980
+customers_affected = 0
+support_tickets_created = 2
+
+###########################################################################################
+
+[response]
+incident_commander = "Mikael Saarinen"
+teams_involved = ["Analytics Platform", "Data Engineering", "Business Intelligence"]
+
+###########################################################################################
+
+[response.timeline]
+event1 = "03:33 - Refresh monitoring alerted on task runtime overrun"
+event2 = "03:47 - Oversized partitions confirmed in source ingestion"
+event3 = "04:18 - Transformation job tuned for larger batch sizes"
+event4 = "04:56 - Refresh backlog processed in priority order"
+event5 = "05:11 - Warehouse dashboards updated successfully"
+
+###########################################################################################
+
+[resolution]
+actions_taken = [
+    "Increased the batch execution window temporarily",
+    "Adjusted transformation concurrency for the large partitions",
+    "Re-ran the failed refresh tasks"
+]
+verification = "Executive dashboards displayed the latest warehouse data after the rerun completed."
+resolved_by = "Data Engineering Team"
+
+###########################################################################################
+
+[postmortem]
+lessons_learned = [
+    "Batch windows need headroom for source partition growth.",
+    "Runtime alerts should trigger before downstream dashboards fall behind."
+]
+
+preventive_actions = [
+    "Add partition-size trend alerts",
+    "Create an adaptive refresh schedule for peak ingestion days",
+    "Review transformation capacity against seasonal growth"
+]
+
+review_date = "2026-03-28"

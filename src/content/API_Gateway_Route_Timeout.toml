@@ -1,0 +1,78 @@
+[report]
+ticket_id = "INC-4"
+title = "API Gateway Route Timeout"
+status = "Monitoring"
+priority = "High"
+severity = "2"
+category = "Platform Services"
+created_at = "2026-03-14T09:18:22"
+resolved_at = "2026-03-14T10:41:09"
+report_author = "Platform Reliability Team"
+
+###########################################################################################
+
+[company]
+name = "Northwind Digital Services"
+department = "Platform Engineering"
+location = "Amsterdam Cloud Region"
+
+###########################################################################################
+
+[incident]
+summary = "Customer requests started timing out at the API gateway after an upstream route table update created an invalid backend target mapping."
+affected_systems = ["API Gateway", "Route Registry", "Customer API"]
+start_time = "2026-03-14T09:05:00"
+detection_time = "2026-03-14T09:16:48"
+end_time = "2026-03-14T10:34:17"
+root_cause = "A route deployment referenced a retired backend service name, causing repeated retry loops and timeout accumulation."
+
+###########################################################################################
+
+[impact]
+orders_failed = 61
+orders_delayed = 214
+estimated_revenue_loss_eur = 8400
+customers_affected = 512
+support_tickets_created = 26
+
+###########################################################################################
+
+[response]
+incident_commander = "Elena Rossi"
+teams_involved = ["Platform Engineering", "Backend Services", "Customer Support"]
+
+###########################################################################################
+
+[response.timeline]
+event1 = "09:16 - Gateway health checks reported elevated timeout rates"
+event2 = "09:23 - Incident bridge opened and routing changes reviewed"
+event3 = "09:41 - Invalid backend target identified in deployment manifest"
+event4 = "10:02 - Route table rolled back to last known good version"
+event5 = "10:34 - Request latency normalized across all regions"
+
+###########################################################################################
+
+[resolution]
+actions_taken = [
+    "Rolled back the faulty gateway route update",
+    "Cleared stale backend references from the registry",
+    "Added a temporary request retry ceiling at the gateway"
+]
+verification = "Synthetic requests and production traffic both completed successfully with normal latency after rollback."
+resolved_by = "Platform Engineering Team"
+
+###########################################################################################
+
+[postmortem]
+lessons_learned = [
+    "Route deployments need stronger validation against retired backend names.",
+    "Gateway retries should fail fast when the target mapping is invalid."
+]
+
+preventive_actions = [
+    "Add deployment checks for stale service references",
+    "Introduce canary routing validation before global rollout",
+    "Alert on retry loops at the gateway layer"
+]
+
+review_date = "2026-03-23"

@@ -1,0 +1,78 @@
+[report]
+ticket_id = "INC-6"
+title = "Mobile App Push Notification Delay"
+status = "Monitoring"
+priority = "Low"
+severity = "2"
+category = "Customer Experience"
+created_at = "2026-03-16T18:40:11"
+resolved_at = "2026-03-16T20:05:37"
+report_author = "Mobile Platform Operations"
+
+###########################################################################################
+
+[company]
+name = "Northwind Digital Services"
+department = "Mobile Experience"
+location = "Dublin Product Office"
+
+###########################################################################################
+
+[incident]
+summary = "Push notifications were delivered several minutes late after a queue backlog formed in the mobile messaging service during a provider handshake retry window."
+affected_systems = ["Push Dispatcher", "Notification Queue", "Mobile App Backend"]
+start_time = "2026-03-16T18:31:00"
+detection_time = "2026-03-16T18:38:49"
+end_time = "2026-03-16T19:58:03"
+root_cause = "A transient provider handshake issue caused retries to accumulate faster than the queue consumer could drain them."
+
+###########################################################################################
+
+[impact]
+orders_failed = 0
+orders_delayed = 0
+estimated_revenue_loss_eur = 1450
+customers_affected = 2917
+support_tickets_created = 34
+
+###########################################################################################
+
+[response]
+incident_commander = "Aisha Khan"
+teams_involved = ["Mobile Platform", "Messaging Infrastructure", "Customer Support"]
+
+###########################################################################################
+
+[response.timeline]
+event1 = "18:38 - Notification lag alert triggered by delivery metrics"
+event2 = "18:47 - Queue growth traced to messaging provider retries"
+event3 = "19:04 - Consumer concurrency increased to reduce backlog"
+event4 = "19:29 - Provider handshake recovered and retry pressure dropped"
+event5 = "19:58 - Notification delivery latency returned to normal"
+
+###########################################################################################
+
+[resolution]
+actions_taken = [
+    "Raised message consumer capacity",
+    "Reduced retry pressure on the provider handshake path",
+    "Drained the queue backlog after the provider recovered"
+]
+verification = "Push notifications were delivered within normal timing thresholds in follow-up test sends."
+resolved_by = "Messaging Infrastructure Team"
+
+###########################################################################################
+
+[postmortem]
+lessons_learned = [
+    "Retry windows should be bounded so queue growth cannot outpace consumption.",
+    "Customer-facing notification latency needs proactive backlog monitoring."
+]
+
+preventive_actions = [
+    "Add queue depth alerts for push delivery",
+    "Introduce adaptive retry backoff for provider handshakes",
+    "Review consumer scaling thresholds for peak traffic windows"
+]
+
+review_date = "2026-03-25"

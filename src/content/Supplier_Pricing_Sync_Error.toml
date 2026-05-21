@@ -1,0 +1,78 @@
+[report]
+ticket_id = "INC-7"
+title = "Supplier Pricing Sync Error"
+status = "Closed"
+priority = "Medium"
+severity = "4"
+category = "Procurement Systems"
+created_at = "2026-03-17T07:52:30"
+resolved_at = "2026-03-17T11:08:55"
+report_author = "Procurement Automation Team"
+
+###########################################################################################
+
+[company]
+name = "Northwind Trading Group"
+department = "Procurement and Sourcing"
+location = "Milan Operations Hub"
+
+###########################################################################################
+
+[incident]
+summary = "Supplier price updates failed to synchronize after a schema change caused the pricing feed parser to reject updated currency fields."
+affected_systems = ["Supplier Price Feed", "Procurement Catalog", "Purchase Planning Dashboard"]
+start_time = "2026-03-17T07:41:00"
+detection_time = "2026-03-17T07:49:18"
+end_time = "2026-03-17T10:57:21"
+root_cause = "A parser update was not deployed alongside the feed schema change, causing currency records to fail validation."
+
+###########################################################################################
+
+[impact]
+orders_failed = 7
+orders_delayed = 42
+estimated_revenue_loss_eur = 3180
+customers_affected = 0
+support_tickets_created = 5
+
+###########################################################################################
+
+[response]
+incident_commander = "Paolo Conti"
+teams_involved = ["Procurement Automation", "Data Integration", "Finance Systems"]
+
+###########################################################################################
+
+[response.timeline]
+event1 = "07:49 - Pricing sync failures appeared in feed monitoring"
+event2 = "08:05 - Schema mismatch confirmed in the parser logs"
+event3 = "08:44 - Temporary compatibility layer deployed"
+event4 = "09:32 - Supplier records reprocessed successfully"
+event5 = "10:57 - Procurement catalog fully synchronized"
+
+###########################################################################################
+
+[resolution]
+actions_taken = [
+    "Deployed a compatibility parser for the updated feed schema",
+    "Reprocessed failed supplier pricing records",
+    "Added validation for currency field changes before import"
+]
+verification = "Supplier pricing matched the upstream feed and procurement teams confirmed correct purchase planning values."
+resolved_by = "Data Integration Team"
+
+###########################################################################################
+
+[postmortem]
+lessons_learned = [
+    "Schema changes must be coordinated with parser releases.",
+    "Validation should flag currency field changes before they break ingestion."
+]
+
+preventive_actions = [
+    "Add schema compatibility tests to the feed pipeline",
+    "Publish feed change notifications to downstream owners",
+    "Introduce automated sample record validation for pricing imports"
+]
+
+review_date = "2026-03-26"

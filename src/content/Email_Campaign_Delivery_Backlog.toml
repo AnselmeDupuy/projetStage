@@ -1,0 +1,78 @@
+[report]
+ticket_id = "INC-10"
+title = "Email Campaign Delivery Backlog"
+status = "Closed"
+priority = "Medium"
+severity = "2"
+category = "Marketing Systems"
+created_at = "2026-03-20T13:44:09"
+resolved_at = "2026-03-20T16:02:31"
+report_author = "Marketing Automation Team"
+
+###########################################################################################
+
+[company]
+name = "Northwind Digital Services"
+department = "Customer Outreach"
+location = "Barcelona Marketing Office"
+
+###########################################################################################
+
+[incident]
+summary = "Scheduled email campaigns backed up after a deliverability provider slowdown caused queued messages to miss their target send window."
+affected_systems = ["Email Campaign Service", "Message Queue", "Deliverability Provider"]
+start_time = "2026-03-20T13:31:00"
+detection_time = "2026-03-20T13:42:57"
+end_time = "2026-03-20T15:54:48"
+root_cause = "A provider-side slowdown reduced throughput below the scheduled campaign enqueue rate, creating a backlog."
+
+###########################################################################################
+
+[impact]
+orders_failed = 0
+orders_delayed = 0
+estimated_revenue_loss_eur = 2610
+customers_affected = 14500
+support_tickets_created = 14
+
+###########################################################################################
+
+[response]
+incident_commander = "Clara Bianchi"
+teams_involved = ["Marketing Automation", "Messaging Operations", "Customer Success"]
+
+###########################################################################################
+
+[response.timeline]
+event1 = "13:42 - Campaign delay alert triggered by queue depth monitoring"
+event2 = "13:55 - Deliverability throughput reviewed and confirmed degraded"
+event3 = "14:21 - Send rate temporarily reduced to stabilize backlog growth"
+event4 = "15:07 - Queue drain caught up with remaining campaign messages"
+event5 = "15:54 - Delivery completed for all scheduled recipients"
+
+###########################################################################################
+
+[resolution]
+actions_taken = [
+    "Reduced campaign send rate during provider slowdown",
+    "Prioritized time-sensitive campaigns in the queue",
+    "Replayed delayed messages after throughput recovered"
+]
+verification = "Delivered message counts matched the campaign plan and provider dashboards showed normal throughput."
+resolved_by = "Messaging Operations Team"
+
+###########################################################################################
+
+[postmortem]
+lessons_learned = [
+    "Campaign scheduling should react to provider throughput changes in real time.",
+    "Queue depth alone is not enough; delivery window drift must be tracked."
+]
+
+preventive_actions = [
+    "Add delivery window drift alerts",
+    "Introduce adaptive campaign pacing for provider degradation",
+    "Review queue prioritization for high-value campaigns"
+]
+
+review_date = "2026-03-29"

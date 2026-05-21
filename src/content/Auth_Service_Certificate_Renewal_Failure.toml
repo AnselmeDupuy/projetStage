@@ -1,0 +1,78 @@
+[report]
+ticket_id = "INC-12"
+title = "Auth Service Certificate Renewal Failure"
+status = "Monitoring"
+priority = "High"
+severity = "4"
+category = "Security Services"
+created_at = "2026-03-22T01:07:25"
+resolved_at = "2026-03-22T03:58:41"
+report_author = "Security Platform Team"
+
+###########################################################################################
+
+[company]
+name = "Northwind Digital Services"
+department = "Identity and Security"
+location = "Stockholm Security Office"
+
+###########################################################################################
+
+[incident]
+summary = "Authentication requests failed intermittently after a certificate renewal task missed the deployment window for a critical auth endpoint."
+affected_systems = ["Auth Service", "Certificate Renewal Job", "Identity Gateway"]
+start_time = "2026-03-22T00:53:00"
+detection_time = "2026-03-22T01:05:39"
+end_time = "2026-03-22T03:44:12"
+root_cause = "A renewal artifact was generated but not propagated to all auth nodes before the previous certificate expired."
+
+###########################################################################################
+
+[impact]
+orders_failed = 33
+orders_delayed = 119
+estimated_revenue_loss_eur = 8960
+customers_affected = 702
+support_tickets_created = 41
+
+###########################################################################################
+
+[response]
+incident_commander = "Freja Lind"
+teams_involved = ["Security Platform", "Identity Services", "Infrastructure Automation"]
+
+###########################################################################################
+
+[response.timeline]
+event1 = "01:05 - Authentication failures observed in gateway logs"
+event2 = "01:16 - Expired certificate identified on a subset of auth nodes"
+event3 = "02:04 - New certificate distributed to all affected nodes"
+event4 = "03:10 - Gateway health checks returned green"
+event5 = "03:44 - Authentication traffic stabilized fully"
+
+###########################################################################################
+
+[resolution]
+actions_taken = [
+    "Forced certificate redeployment across all auth nodes",
+    "Restarted the identity gateway to clear stale sessions",
+    "Added a manual verification step to the renewal workflow"
+]
+verification = "Successful login tests passed across multiple regions after the certificate rollout completed."
+resolved_by = "Identity Services Team"
+
+###########################################################################################
+
+[postmortem]
+lessons_learned = [
+    "Certificate renewal workflows need end-to-end propagation checks.",
+    "Node-level health checks should include certificate freshness."
+]
+
+preventive_actions = [
+    "Add renewal propagation validation to the auth pipeline",
+    "Alert when certificate expiry approaches within a short threshold",
+    "Document a fallback procedure for emergency certificate replacement"
+]
+
+review_date = "2026-03-31"
