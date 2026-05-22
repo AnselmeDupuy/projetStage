@@ -642,10 +642,10 @@ class TagGenerator:
         const height = dimensions.height;
         context.clearRect(0, 0, width, height);
 
-        context.fillStyle = "#0f172a";
+        context.fillStyle = "#e6e6e6";
         context.fillRect(0, 0, width, height);
 
-        context.fillStyle = "#e2e8f0";
+        context.fillStyle = "#000000";
         context.font = "600 18px sans-serif";
         context.textAlign = "left";
         context.textBaseline = "top";
@@ -662,7 +662,7 @@ class TagGenerator:
         const chartHeight = height - padding.top - padding.bottom;
         const maxValue = Math.max(...entries.map((entry) => entry.value), 0);
         const safeMax = maxValue > 0 ? maxValue : 1;
-        const axisColor = "rgba(226, 232, 240, 0.25)";
+        const axisColor = "#000000";
         const barColor = "rgba(245, 158, 11, 0.82)";
         const barBorder = "rgba(245, 158, 11, 1)";
         const barGap = 16;
@@ -677,7 +677,7 @@ class TagGenerator:
         context.stroke();
 
         context.font = "400 12px sans-serif";
-        context.fillStyle = "rgba(226, 232, 240, 0.9)";
+        context.fillStyle = "#000000";
         context.textAlign = "right";
         context.textBaseline = "middle";
 
@@ -711,7 +711,7 @@ class TagGenerator:
             context.strokeStyle = barBorder;
             context.stroke();
 
-            context.fillStyle = "#e2e8f0";
+            context.fillStyle = "#000000";
             context.font = "600 12px sans-serif";
             context.fillText(formatCurrency(entry.value), x + barWidth / 2, y - 18);
 
@@ -719,7 +719,7 @@ class TagGenerator:
             context.translate(x + barWidth / 2, padding.top + chartHeight + 10);
             context.rotate(-Math.PI / 12);
             context.font = "400 11px sans-serif";
-            context.fillStyle = "rgba(226, 232, 240, 0.92)";
+            context.fillStyle = "#000000";
             context.textAlign = "center";
             context.textBaseline = "top";
             context.fillText(entry.label, 0, 0);
