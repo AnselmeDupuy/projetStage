@@ -139,6 +139,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 navToggleBtn.setAttribute("aria-expanded", "false");
             }
         });
+
+        // Ferme le menu au clic en dehors
+        document.addEventListener("click", (event) => {
+            if (nav.classList.contains("nav-open") && !nav.contains(event.target) && event.target !== navToggleBtn) {
+                nav.classList.remove("nav-open");
+                navToggleBtn.setAttribute("aria-expanded", "false");
+            }
+        });
     }
 
     // Gere l'ouverture des modales affichant les details complets des incidents
